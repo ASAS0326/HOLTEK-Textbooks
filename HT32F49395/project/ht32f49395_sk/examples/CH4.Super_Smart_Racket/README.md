@@ -59,13 +59,13 @@ CH4.Super_Smart_Racket/
 
 ## 開發環境
 
-- Keil MDK 5，Arm Compiler 6（`mdk_v5` 專案以 V6.24 建置），裝置包 `Holtek.HT32F493x5_DFP` 1.0.6
+- Keil MDK 5（實測 MDK 5.43a）：資料收集專案使用 Arm Compiler 6，推論專案使用 Keil 中設定的 Arm GNU Toolchain（GCC，實測 14.2），裝置包 `Holtek.HT32F493x5_DFP` 1.0.6
 - 推論專案另需 CMSIS 6、CMSIS-DSP 1.16.2、CMSIS-NN 4.0.0
 - Python 3 與 `pyserial`（`python -m pip install pyserial`）；錄製腳本的互動按鍵只支援 Windows 終端機
 - Edge Impulse 帳號
 - 支援 Web Bluetooth 的瀏覽器（Chrome／Edge），或 Android 手機安裝 `APK/app-release.apk`
 
-> `Run_Classification/mdk_v537` 專案沒有加入 Edge Impulse 元件與 `ei_main.cpp`，推論請使用 `mdk_v5` 或 HT32-IDE 專案。
+> `mdk_v5` 與 `mdk_v537` 兩種 Keil 專案的原始檔與元件相同，都可以編譯。
 
 ## 步驟一：收集揮拍資料
 
