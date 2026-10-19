@@ -42,7 +42,7 @@
 
 ```text
 CH5.Sound/
-├── Data_Collection/              # 資料收集韌體（串流 PCM 給 Data Forwarder）
+├── Data_collection/              # 資料收集韌體（串流 PCM 給 Data Forwarder）
 │   ├── src/  inc/                # main.c、ICS43434 驅動
 │   ├── mdk_v5/  mdk_v537/  HT32-IDE/
 ├── Run_Classification/           # 推論韌體
@@ -69,7 +69,7 @@ CH5.Sound/
 
 ### 1. 燒錄資料收集韌體
 
-開啟 `Data_Collection/mdk_v5/led_toggle.uvprojx`，編譯並燒錄。
+開啟 `Data_collection/mdk_v5/led_toggle.uvprojx`，編譯並燒錄。
 
 韌體以 **921600 bps** 從 USART1 輸出 PCM，**每行一個有號整數**（Data Forwarder 格式）：
 

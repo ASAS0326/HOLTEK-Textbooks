@@ -1,6 +1,15 @@
 # CH6 影像辨識 — HT32F49395
 
-用 HM01B0 低功耗灰階攝影機拍攝影像，經序列埠傳到 PC 存檔，在 Edge Impulse 訓練影像分類模型，再部署回 HT32F49395 即時推論，並由 PC 端程式同時顯示畫面與辨識結果。
+用 HM01B0 低功耗灰階攝影機拍攝手勢影像，經序列埠傳到 PC 存檔，在 Edge Impulse 訓練「剪刀、石頭、布」影像分類模型，再部署回 HT32F49395 即時推論，並由 PC 端程式同時顯示畫面與辨識結果。
+
+## 分類標籤
+
+| 標籤 | 說明 |
+|---|---|
+| `paper` | 布 |
+| `scissors` | 剪刀 |
+| `stone` | 石頭 |
+| `unknown` | 其他畫面（沒有手勢、背景等） |
 
 ## 學習目標
 
@@ -38,17 +47,19 @@ DMA：DMA1 Channel 2（由 TMR3_CH3 請求），把 PC0–PC7 的像素搬到記
 
 ```text
 CH6.image/
-├── data_collection/              # 資料收集韌體
+├── Data_collection/              # 資料收集韌體
 │   ├── src/                      # main.c、hm01b0.c/.h
 │   ├── mdk_v5/  mdk_v537/  HT32-IDE/
-├── run_classification/           # 推論韌體
+├── Run_Classification/           # 推論韌體
 │   ├── src/                      # main.c、ei_main.cpp、hm01b0.c/.h
 │   ├── mdk_v5/  mdk_v537/  HT32-IDE/
+├── holtek_image_classification-cmsis-package-v15-impulse-#1/
+│   ├── EdgeImpulse.HOLTEK_Image_Classification.15.0.0.pack   # 已訓練好的模型
+│   ├── EdgeImpulse.EI-SDK.1.95.10.pack                       # Edge Impulse SDK
+│   └── edgeimpulse.clayer.yml
 ├── data_collection.py            # PC 端影像預覽與存檔
 └── run_classification.py         # PC 端影像＋推論結果顯示
 ```
-
-本章沒有附模型 Pack。推論專案引用的是 `EdgeImpulse::HOLTEK_Image_Classification` 15.0.0 與 `EI-SDK` 1.95.10，請用自己在 Edge Impulse 訓練的模型取代。
 
 ## 開發環境
 
@@ -69,7 +80,7 @@ CH6.image/
 
 ## 步驟一：收集影像
 
-1. 開啟 `data_collection/mdk_v5/data_collection.uvprojx`，編譯並燒錄
+1. 開啟 `Data_collection/mdk_v5/data_collection.uvprojx`，編譯並燒錄
 2. 修改 `data_collection.py` 開頭的 `SERIAL_PORT`（預設 `COM3`）為實際的 COM 埠
 3. 執行：
 
@@ -80,7 +91,7 @@ CH6.image/
 4. 視窗會顯示放大 4 倍的即時影像，標題列顯示 FPS
 5. 按 `s` 存檔（`unknown_<時間戳>.jpg`），按 `q` 離開
 
-存下的檔名開頭都是 `unknown`，請依類別放到不同資料夾或重新命名，方便上傳時設定標籤。存檔的影像為放大 4 倍後的 384 × 384，上傳後 Edge Impulse 會依 Impulse 設定縮回 96 × 96。
+存下的檔名開頭都是 `unknown`，請依類別（`paper`／`scissors`／`stone`／`unknown`）放到不同資料夾或重新命名，方便上傳時設定標籤；沒有手勢的背景畫面可以直接當作 `unknown` 類別。存檔的影像為放大 4 倍後的 384 × 384，上傳後 Edge Impulse 會依 Impulse 設定縮回 96 × 96。
 
 開機時序列埠會先印出 `HM01B0 Model ID: 0x....` 與 `HM01B0 initialized.`；若顯示 `HM01B0 initialization failed!`，請檢查攝影機排線與 I2C 接線。
 
@@ -92,10 +103,12 @@ CH6.image/
 4. Learning block：**Transfer Learning (Images)** 或 Classification
 5. **Deployment** 選擇 **CMSIS Pack** 匯出
 
+本章附的模型 `HOLTEK_Image_Classification` 15.0.0（Edge Impulse 專案 1083500，deploy v15）：輸入 96 × 96 灰階（9216 個值）、int8 量化、4 個標籤，判定門檻 0.6。
+
 ## 步驟三：部署推論韌體
 
-1. Keil **Pack Installer → File → Import** 匯入自己的模型 Pack 與 EI-SDK Pack
-2. 開啟 `run_classification/mdk_v5/run_classification.uvprojx`，在 **Manage Run-Time Environment** 把模型元件換成自己的模型
+1. Keil **Pack Installer → File → Import** 匯入 `holtek_image_classification-cmsis-package-v15-impulse-#1/` 內的兩個 `.pack`（若是自己訓練的模型，改匯入 Edge Impulse 下載的 Pack）
+2. 開啟 `Run_Classification/mdk_v5/run_classification.uvprojx`，在 **Manage Run-Time Environment** 確認已勾選 Edge Impulse SDK 與模型元件
 3. 編譯、燒錄
 4. 修改 `run_classification.py` 的 `SERIAL_PORT` 後執行：
 

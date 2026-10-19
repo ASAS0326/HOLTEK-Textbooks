@@ -23,7 +23,7 @@
 
 ```text
 CH7.Temperature_and_humidity/
-├── Data_Collection/              # 資料收集韌體（每 5 秒輸出一筆）
+├── Data_collection/              # 資料收集韌體（每 5 秒輸出一筆）
 │   ├── src/  inc/                # main.c、hs300x 驅動
 │   ├── mdk_v5/  mdk_v537/  HT32-IDE/
 ├── Run_Classification/           # 預測韌體
@@ -54,7 +54,7 @@ CH7.Temperature_and_humidity/
 
 ### 1. 燒錄資料收集韌體
 
-開啟 `Data_Collection/mdk_v5/led_toggle.uvprojx`，編譯並燒錄。韌體每 5 秒啟動一次量測，量測期間 CPU 以 `__WFI()` 休眠，序列埠輸出：
+開啟 `Data_collection/mdk_v5/led_toggle.uvprojx`，編譯並燒錄。韌體每 5 秒啟動一次量測，量測期間 CPU 以 `__WFI()` 休眠，序列埠輸出：
 
 ```text
 HS300x Data Logger Start

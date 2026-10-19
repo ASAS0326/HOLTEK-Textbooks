@@ -45,7 +45,7 @@
 
 ```text
 CH9..Sound/
-├── Data_Collection/ht32f675x5_r2/
+├── Data_collection/ht32f675x5_r2/
 │   ├── main.c
 │   ├── src/  inc/                # I2S.c、SPH0645LM4H.c
 │   ├── config/app_cfg.h          # 接腳、UART 設定
@@ -74,7 +74,7 @@ CH9..Sound/
 
 ## 步驟一：收集聲音資料
 
-1. 開啟 `Data_Collection/ht32f675x5_r2/project/gpio.uvprojx` 編譯燒錄，或燒錄 `hex/gpio.hex`
+1. 開啟 `Data_collection/ht32f675x5_r2/project/gpio.uvprojx` 編譯燒錄，或燒錄 `hex/gpio.hex`
 2. 韌體以 **921600 bps** 從 UART0 輸出 8 kHz PCM，每行一個有號整數
 3. 執行 Data Forwarder：
 

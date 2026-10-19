@@ -103,7 +103,7 @@ CH8.Super_Smart_Racket/
 
 1. Keil **Pack Installer → File → Import** 匯入 `pinpon_model/` 內的兩個 `.pack`
 2. 開啟 `Run_Classification/ht32f675x5_r2/project/ble_peripheral.uvmpw`
-3. **先編譯 `cp`**：建置後的批次檔會用 `tools/bin2array` 把 CP 的二進位檔轉成 `cp/app_code_cp.c`（陣列 `g_u8CpAppCode`）
+3. **先編譯 `cp`**：建置後的批次檔會用 `HT32F67595/tools/bin2array/bin2array.exe` 把 CP 的二進位檔轉成 `cp/app_code_cp.c`（陣列 `g_u8CpAppCode`）
 4. **再編譯 `mp`**：MP 專案會把 `app_code_cp.c` 一起連結進去，輸出的 `.hex` 會複製到 `hex/ble_peripheral.hex`
 5. 燒錄 `hex/ble_peripheral.hex`
 

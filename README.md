@@ -8,7 +8,7 @@
 |---|---|---|---|---|
 | [CH4](HT32F49395/project/ht32f49395_sk/examples/CH4.Super_Smart_Racket/README.md) | 超級智慧球拍 | HT32F49395 | LSM6DS3 六軸 IMU | 揮拍動作分類（7 類），BLE 傳送結果 |
 | [CH5](HT32F49395/project/ht32f49395_sk/examples/CH5.Sound/README.md) | 嬰兒哭聲偵測 | HT32F49395 | ICS-43434 I2S 麥克風 | 音訊分類（MFCC） |
-| [CH6](HT32F49395/project/ht32f49395_sk/examples/CH6.image/README.md) | 影像辨識 | HT32F49395 | HM01B0 灰階攝影機 | 影像分類（96 × 96） |
+| [CH6](HT32F49395/project/ht32f49395_sk/examples/CH6.image/README.md) | 影像辨識：剪刀石頭布 | HT32F49395 | HM01B0 灰階攝影機 | 影像分類（96 × 96） |
 | [CH7](HT32F49395/project/ht32f49395_sk/examples/CH7.Temperature_and_humidity/README.md) | 溫溼度趨勢預測 | HT32F49395 | HS3003 溫溼度 | 迴歸（預測 30 秒後） |
 | [CH8](HT32F67595/projects/CH8.Super_Smart_Racket/README.md) | 超級智慧球拍 | HT32F67595 | LSM6DS3 六軸 IMU | 揮拍動作分類（7 類），內建 BLE |
 | [CH9](HT32F67595/projects/CH9..Sound/README.md) | 嬰兒哭聲偵測 | HT32F67595 | SPH0645LM4H I2S 麥克風 | 音訊分類（連續推論） |
@@ -40,4 +40,18 @@ HOLTEK-Textbooks/
 - Python 3（`pyserial`；CH6 另需 `numpy`、`opencv-python`）
 - Edge Impulse 帳號；聲音章節需 Edge Impulse CLI（Data Forwarder）
 
-各章附有已訓練好的 Edge Impulse CMSIS Pack（CH6 除外），可先直接部署體驗，再用自己收集的資料重新訓練。
+## 各章內容
+
+每章都包含以下部分：
+
+| 章節 | 資料收集 | 推論 | 模型 Pack | PC 端 Python |
+|---|---|---|---|---|
+| CH4 | `Data_collection/` | `Run_Classification/` | `pinpon2-cmsis-package-v1-impulse-#1/` | `collect_training_data.py` |
+| CH5 | `Data_collection/` | `Run_Classification/` | `baby_cry-cmsis-package-v5-impulse-#1/` | —（使用 Edge Impulse Data Forwarder） |
+| CH6 | `Data_collection/` | `Run_Classification/` | `holtek_image_classification-cmsis-package-v15-impulse-#1/` | `data_collection.py`、`run_classification.py` |
+| CH7 | `Data_collection/` | `Run_Classification/` | `t&h2-cmsis-package-v2-impulse-#1/` | `data_logger.py`、`data.py` |
+| CH8 | `Data_collection/` | `Run_Classification/` | `pinpon_model/` | `collect_training_data.py` |
+| CH9 | `Data_collection/` | `Run_Classification/` | `baby_cry-cmsis-package-v5-impulse-#1/` | —（使用 Edge Impulse Data Forwarder） |
+| CH10 | `Data_collection/` | `Run_Classification/` | `t&h2-cmsis-package-v2-impulse-#1/` | `data_logger.py`、`data.py` |
+
+相同題目在兩塊板子上使用同一份 Python 腳本（CH4／CH8、CH7／CH10 的 `.py` 內容完全相同）。各章附的 Edge Impulse CMSIS Pack 可以直接部署體驗，再用自己收集的資料重新訓練。

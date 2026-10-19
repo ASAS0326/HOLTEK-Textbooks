@@ -23,7 +23,7 @@ HS3003 每次轉換約 40 ms；量測週期以「開始量測的時間」為基�
 
 ```text
 CH10.Temperature_and_humidity/
-├── Data_Collection/ht32f675x5_r2/
+├── Data_collection/ht32f675x5_r2/
 │   ├── main.c                    # 每 5 秒量測並輸出 DATA
 │   ├── src/  inc/                # hs300x.c、i2c.c
 │   ├── config/  project/  project_HT32-IDE/
@@ -52,7 +52,7 @@ CH10.Temperature_and_humidity/
 
 ## 步驟一：記錄溫溼度資料
 
-1. 開啟 `Data_Collection/ht32f675x5_r2/project/gpio.uvprojx` 編譯燒錄，或燒錄 `hex/gpio.hex`
+1. 開啟 `Data_collection/ht32f675x5_r2/project/gpio.uvprojx` 編譯燒錄，或燒錄 `hex/gpio.hex`
 2. 序列輸出與 CH7 相同：
 
    ```text
