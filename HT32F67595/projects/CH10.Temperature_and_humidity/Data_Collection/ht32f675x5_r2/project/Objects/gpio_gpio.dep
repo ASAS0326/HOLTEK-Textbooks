@@ -1,0 +1,229 @@
+Dependencies for Project 'gpio', Target 'gpio': (DO NOT MODIFY !)
+CompilerVersion: 6240000::V6.24::ARMCLANG
+F (..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\startup_ARMCM33.s)(0x6ABC6B2B)(--cpu=Cortex-M33 --fpu=FPv5-SP --li -g --pd "__MICROLIB SETA 1" --diag_suppress=A1950W-I.\RTE\_gpio-IC:\Users\user\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\Core\Include-IC:\Users\user\AppData\Local\Arm\Packs\Holtek\HT32F675x5_DFP\1.0.5\Device\Include-IC:\Users\user\AppData\Local\Arm\Packs\Holtek\HT32F675x5_DFP\1.0.5\Device\ARM\ARMCM33\Include--pd "__UVISION_VERSION SETA 543"--pd "_RTE_ SETA 1"--pd "__MAIN_PROCESSOR SETA 1"--list .\listings\startup_armcm33.lst--xref -o .\objects\startup_armcm33.o--depend .\objects\startup_armcm33.d)
+F (..\..\..\..\..\sources\device\ht32f675x5\Source\system_ARMCM33.c)(0x6ABC6B2B)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -mlittle-endian -gdwarf-4 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../../../../third_party/CMSIS/5.7.0/CMSIS/Include -I ../../../../../sources/device/ht32f675x5/Include -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/register -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hw/inc -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hal/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hw/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hal/inc -I ../../../../../sources/boards -I ../../../../../sources/components/ht32f675x5_r2/app_debug -I ../../../../../sources/components/ht32f675x5_r2/err_debug -I ../../../../../sources/components/ht32f675x5_r2/rom_callback -I ../../../../../sources/components/ht32f675x5_r2/utility -I ../../../../../sources/mem_cfg -I ../config -I ./RTE/_gpio -I ../inc -I ../src -D__UVISION_VERSION="543" -D_RTE_ -D__MAIN_PROCESSOR -DHT32F67595_EVB-o ./objects/system_armcm33.o -MMD)
+I (..\..\..\..\..\sources\device\ht32f675x5\Include\ARMCM33_DSP_FP.h)(0x6ABC6B2A)
+I (..\..\..\..\..\third_party\CMSIS\5.7.0\CMSIS\Include\core_cm33.h)(0x6ABC6B31)
+I (..\..\..\..\..\sources\device\ht32f675x5\Include\system_ARMCM33.h)(0x6ABC6B2A)
+F (..\..\..\..\..\libraries\boot2\ht32f675x5_boot2_lib_r2_v1.1.c)(0x6ABC6B1F)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -mlittle-endian -gdwarf-4 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../../../../third_party/CMSIS/5.7.0/CMSIS/Include -I ../../../../../sources/device/ht32f675x5/Include -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/register -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hw/inc -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hal/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hw/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hal/inc -I ../../../../../sources/boards -I ../../../../../sources/components/ht32f675x5_r2/app_debug -I ../../../../../sources/components/ht32f675x5_r2/err_debug -I ../../../../../sources/components/ht32f675x5_r2/rom_callback -I ../../../../../sources/components/ht32f675x5_r2/utility -I ../../../../../sources/mem_cfg -I ../config -I ./RTE/_gpio -I ../inc -I ../src -D__UVISION_VERSION="543" -D_RTE_ -D__MAIN_PROCESSOR -DHT32F67595_EVB-o ./objects/ht32f675x5_boot2_lib_r2_v1.1.o -MMD)
+F (..\..\..\..\..\libraries\rom\ht32f675x5_rom_lib_mp_r2.lib)(0x6ABC6B1F)()
+F (..\..\..\..\..\libraries\patch\ht32f675x5_patch_lib_mp_r2.lib)(0x6ABC6B1F)()
+F (..\..\..\..\..\sources\components\ht32f675x5_r2\app_debug\app_debug.c)(0x6ABC6B2A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -mlittle-endian -gdwarf-4 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../../../../third_party/CMSIS/5.7.0/CMSIS/Include -I ../../../../../sources/device/ht32f675x5/Include -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/register -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hw/inc -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hal/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hw/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hal/inc -I ../../../../../sources/boards -I ../../../../../sources/components/ht32f675x5_r2/app_debug -I ../../../../../sources/components/ht32f675x5_r2/err_debug -I ../../../../../sources/components/ht32f675x5_r2/rom_callback -I ../../../../../sources/components/ht32f675x5_r2/utility -I ../../../../../sources/mem_cfg -I ../config -I ./RTE/_gpio -I ../inc -I ../src -D__UVISION_VERSION="543" -D_RTE_ -D__MAIN_PROCESSOR -DHT32F67595_EVB-o ./objects/app_debug.o -MMD)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\RegHT32F675x5.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\device\ht32f675x5\Include\ARMCM33_DSP_FP.h)(0x6ABC6B2A)
+I (..\..\..\..\..\third_party\CMSIS\5.7.0\CMSIS\Include\core_cm33.h)(0x6ABC6B31)
+I (..\..\..\..\..\sources\device\ht32f675x5\Include\system_ARMCM33.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_adc.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_adc_ana.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_audio.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_cache.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_cpto.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_crg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_dma.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_ecc.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_efuse.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_gpio.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_i2c.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_i2s.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_pmu.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_qdec.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_qspi.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rfsec.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rtc.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rtc_pdw.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_spi.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_stim.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_sys_ctrl.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_timer.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_trng.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_uart.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_wdt.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_usb_ctrl.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_usb_phy.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\ht32f675x5_reg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\utility\err_def.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_crg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_gpio.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_uart.h)(0x6ABCA582)
+I (..\config\app_cfg.h)(0x6ABC8223)
+I (..\config\..\..\..\..\..\sources\mem_cfg\ht32f675x5_mem_cfg_r2.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\app_debug\app_debug.h)(0x6ABC6B2A)
+F (..\..\..\..\..\sources\components\ht32f675x5_r2\err_debug\err_debug.c)(0x6ABC6B2A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -mlittle-endian -gdwarf-4 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../../../../third_party/CMSIS/5.7.0/CMSIS/Include -I ../../../../../sources/device/ht32f675x5/Include -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/register -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hw/inc -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hal/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hw/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hal/inc -I ../../../../../sources/boards -I ../../../../../sources/components/ht32f675x5_r2/app_debug -I ../../../../../sources/components/ht32f675x5_r2/err_debug -I ../../../../../sources/components/ht32f675x5_r2/rom_callback -I ../../../../../sources/components/ht32f675x5_r2/utility -I ../../../../../sources/mem_cfg -I ../config -I ./RTE/_gpio -I ../inc -I ../src -D__UVISION_VERSION="543" -D_RTE_ -D__MAIN_PROCESSOR -DHT32F67595_EVB-o ./objects/err_debug.o -MMD)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\RegHT32F675x5.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\device\ht32f675x5\Include\ARMCM33_DSP_FP.h)(0x6ABC6B2A)
+I (..\..\..\..\..\third_party\CMSIS\5.7.0\CMSIS\Include\core_cm33.h)(0x6ABC6B31)
+I (..\..\..\..\..\sources\device\ht32f675x5\Include\system_ARMCM33.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_adc.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_adc_ana.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_audio.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_cache.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_cpto.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_crg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_dma.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_ecc.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_efuse.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_gpio.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_i2c.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_i2s.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_pmu.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_qdec.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_qspi.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rfsec.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rtc.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rtc_pdw.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_spi.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_stim.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_sys_ctrl.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_timer.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_trng.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_uart.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_wdt.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_usb_ctrl.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_usb_phy.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\ht32f675x5_reg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\utility\err_def.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_wdt.h)(0x6ABC6B2B)
+I (..\config\app_cfg.h)(0x6ABC8223)
+I (..\config\..\..\..\..\..\sources\mem_cfg\ht32f675x5_mem_cfg_r2.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\rom_callback\rom_callback.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\app_debug\app_debug.h)(0x6ABC6B2A)
+F (..\main.c)(0x6ABC8217)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -mlittle-endian -gdwarf-4 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../../../../third_party/CMSIS/5.7.0/CMSIS/Include -I ../../../../../sources/device/ht32f675x5/Include -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/register -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hw/inc -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hal/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hw/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hal/inc -I ../../../../../sources/boards -I ../../../../../sources/components/ht32f675x5_r2/app_debug -I ../../../../../sources/components/ht32f675x5_r2/err_debug -I ../../../../../sources/components/ht32f675x5_r2/rom_callback -I ../../../../../sources/components/ht32f675x5_r2/utility -I ../../../../../sources/mem_cfg -I ../config -I ./RTE/_gpio -I ../inc -I ../src -D__UVISION_VERSION="543" -D_RTE_ -D__MAIN_PROCESSOR -DHT32F67595_EVB-o ./objects/main.o -MMD)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\RegHT32F675x5.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\device\ht32f675x5\Include\ARMCM33_DSP_FP.h)(0x6ABC6B2A)
+I (..\..\..\..\..\third_party\CMSIS\5.7.0\CMSIS\Include\core_cm33.h)(0x6ABC6B31)
+I (..\..\..\..\..\sources\device\ht32f675x5\Include\system_ARMCM33.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_adc.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_adc_ana.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_audio.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_cache.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_cpto.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_crg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_dma.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_ecc.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_efuse.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_gpio.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_i2c.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_i2s.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_pmu.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_qdec.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_qspi.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rfsec.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rtc.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rtc_pdw.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_spi.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_stim.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_sys_ctrl.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_timer.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_trng.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_uart.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_wdt.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_usb_ctrl.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_usb_phy.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\ht32f675x5_reg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\utility\type_def.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\utility\err_def.h)(0x6ABC6B2A)
+I (..\config\app_cfg.h)(0x6ABC8223)
+I (..\config\..\..\..\..\..\sources\mem_cfg\ht32f675x5_mem_cfg_r2.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\boards\boards.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\boards\ht32f67595_evb.h)(0x6ABC81E3)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_wdt.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\utility\utility.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\app_debug\app_debug.h)(0x6ABC6B2A)
+I (..\inc\i2c.h)(0x6ABC8270)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hal\inc\hal_pmu.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_crg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_pmu.h)(0x6ABC6B2B)
+I (..\inc\hs300x.h)(0x6ABC82AC)
+F (..\inc\hs300x.h)(0x6ABC82AC)()
+F (..\inc\i2c.h)(0x6ABC8270)()
+F (..\src\hs300x.c)(0x6ABC8291)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -mlittle-endian -gdwarf-4 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../../../../third_party/CMSIS/5.7.0/CMSIS/Include -I ../../../../../sources/device/ht32f675x5/Include -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/register -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hw/inc -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hal/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hw/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hal/inc -I ../../../../../sources/boards -I ../../../../../sources/components/ht32f675x5_r2/app_debug -I ../../../../../sources/components/ht32f675x5_r2/err_debug -I ../../../../../sources/components/ht32f675x5_r2/rom_callback -I ../../../../../sources/components/ht32f675x5_r2/utility -I ../../../../../sources/mem_cfg -I ../config -I ./RTE/_gpio -I ../inc -I ../src -D__UVISION_VERSION="543" -D_RTE_ -D__MAIN_PROCESSOR -DHT32F67595_EVB-o ./objects/hs300x.o -MMD)
+I (..\inc\hs300x.h)(0x6ABC82AC)
+I (..\inc\i2c.h)(0x6ABC8270)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\RegHT32F675x5.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\device\ht32f675x5\Include\ARMCM33_DSP_FP.h)(0x6ABC6B2A)
+I (..\..\..\..\..\third_party\CMSIS\5.7.0\CMSIS\Include\core_cm33.h)(0x6ABC6B31)
+I (..\..\..\..\..\sources\device\ht32f675x5\Include\system_ARMCM33.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_adc.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_adc_ana.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_audio.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_cache.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_cpto.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_crg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_dma.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_ecc.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_efuse.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_gpio.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_i2c.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_i2s.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_pmu.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_qdec.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_qspi.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rfsec.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rtc.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rtc_pdw.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_spi.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_stim.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_sys_ctrl.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_timer.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_trng.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_uart.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_wdt.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_usb_ctrl.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_usb_phy.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\ht32f675x5_reg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\utility\err_def.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hal\inc\hal_pmu.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_crg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_pmu.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\utility\type_def.h)(0x6ABC6B2A)
+F (..\src\i2c.c)(0x6ABC8254)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -mlittle-endian -gdwarf-4 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../../../../third_party/CMSIS/5.7.0/CMSIS/Include -I ../../../../../sources/device/ht32f675x5/Include -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/register -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hw/inc -I ../../../../../sources/drivers/ht32f675x5_r2/ht32/hal/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hw/inc -I ../../../../../sources/patch/ht32f675x5_patch_lib_r2/patch_hal/inc -I ../../../../../sources/boards -I ../../../../../sources/components/ht32f675x5_r2/app_debug -I ../../../../../sources/components/ht32f675x5_r2/err_debug -I ../../../../../sources/components/ht32f675x5_r2/rom_callback -I ../../../../../sources/components/ht32f675x5_r2/utility -I ../../../../../sources/mem_cfg -I ../config -I ./RTE/_gpio -I ../inc -I ../src -D__UVISION_VERSION="543" -D_RTE_ -D__MAIN_PROCESSOR -DHT32F67595_EVB-o ./objects/i2c.o -MMD)
+I (..\inc\i2c.h)(0x6ABC8270)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\RegHT32F675x5.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\device\ht32f675x5\Include\ARMCM33_DSP_FP.h)(0x6ABC6B2A)
+I (..\..\..\..\..\third_party\CMSIS\5.7.0\CMSIS\Include\core_cm33.h)(0x6ABC6B31)
+I (..\..\..\..\..\sources\device\ht32f675x5\Include\system_ARMCM33.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_adc.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_adc_ana.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_audio.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_cache.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_cpto.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_crg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_dma.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_ecc.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_efuse.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_gpio.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_i2c.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_i2s.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_pmu.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_qdec.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_qspi.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rfsec.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rtc.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_rtc_pdw.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_spi.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_stim.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_sys_ctrl.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_timer.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_trng.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_uart.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_wdt.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_usb_ctrl.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\reg_usb_phy.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\register\ht32f675x5_reg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\utility\err_def.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hal\inc\hal_pmu.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_crg.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_pmu.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\utility\type_def.h)(0x6ABC6B2A)
+I (..\config\app_cfg.h)(0x6ABC8223)
+I (..\config\..\..\..\..\..\sources\mem_cfg\ht32f675x5_mem_cfg_r2.h)(0x6ABC6B2C)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\app_debug\app_debug.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\boards\boards.h)(0x6ABC6B2A)
+I (..\..\..\..\..\sources\boards\ht32f67595_evb.h)(0x6ABC81E3)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_dma.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_efuse.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_gpio.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_i2c.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_sys_ctrl.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\drivers\ht32f675x5_r2\ht32\hw\inc\hw_stim.h)(0x6ABC6B2B)
+I (..\..\..\..\..\sources\components\ht32f675x5_r2\utility\utility.h)(0x6ABC6B2A)

@@ -1,0 +1,15 @@
+--cpu=Cortex-M33
+".\objects\startup_armcm33.o"
+".\objects\system_armcm33.o"
+".\objects\ht32f675x5_boot2_lib_r2_v1.1.o"
+"..\..\..\..\..\libraries\rom\ht32f675x5_rom_lib_mp_r2.lib"
+"..\..\..\..\..\libraries\patch\ht32f675x5_patch_lib_mp_r2.lib"
+".\objects\app_debug.o"
+".\objects\err_debug.o"
+".\objects\main.o"
+".\objects\hs300x.o"
+".\objects\i2c.o"
+--library_type=microlib --strict --scatter ".\gpio.sct"
+--entry=Reset_Handler --keep=g_boot2LibCode --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\gpio.map" -o .\Objects\gpio.axf

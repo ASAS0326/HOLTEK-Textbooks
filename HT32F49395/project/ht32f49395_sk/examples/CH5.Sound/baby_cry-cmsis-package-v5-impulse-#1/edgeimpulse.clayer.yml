@@ -1,0 +1,11 @@
+layer:
+  type: Edge Impulse layer
+  description: Edge Impulse SDK and model
+
+  packs:
+    - pack: EdgeImpulse::EI-SDK@1.95.13
+    - pack: EdgeImpulse::baby_cry@5.0.0
+
+  components:
+    - component: EdgeImpulse::EdgeImpulse:SDK@1.95.13
+    - component: EdgeImpulse:model:baby_cry@5.0.0

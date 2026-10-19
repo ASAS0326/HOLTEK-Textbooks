@@ -1,0 +1,2150 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;/******************************************************
+                       ********************//**
+    2 00000000         ; * @file     startup_ARMCM33.s
+    3 00000000         ; * @brief    CMSIS Core Device Startup File for
+    4 00000000         ; *           ARMCM33 Device
+    5 00000000         ; * @version  V5.4.0
+    6 00000000         ; * @date     12. December 2018
+    7 00000000         ; ******************************************************
+                       ************************/
+    8 00000000         ;/*
+    9 00000000         ; * Copyright (c) 2009-2018 Arm Limited. All rights rese
+                       rved.
+   10 00000000         ; *
+   11 00000000         ; * SPDX-License-Identifier: Apache-2.0
+   12 00000000         ; *
+   13 00000000         ; * Licensed under the Apache License, Version 2.0 (the 
+                       License); you may
+   14 00000000         ; * not use this file except in compliance with the Lice
+                       nse.
+   15 00000000         ; * You may obtain a copy of the License at
+   16 00000000         ; *
+   17 00000000         ; * www.apache.org/licenses/LICENSE-2.0
+   18 00000000         ; *
+   19 00000000         ; * Unless required by applicable law or agreed to in wr
+                       iting, software
+   20 00000000         ; * distributed under the License is distributed on an A
+                       S IS BASIS, WITHOUT
+   21 00000000         ; * WARRANTIES OR CONDITIONS OF ANY KIND, either express
+                        or implied.
+   22 00000000         ; * See the License for the specific language governing 
+                       permissions and
+   23 00000000         ; * limitations under the License.
+   24 00000000         ; */
+   25 00000000         
+   26 00000000         ;//-------- <<< Use Configuration Wizard in Context Menu
+                        >>> ------------------
+   27 00000000         
+   28 00000000         ;//this file has been modified
+   29 00000000         
+   30 00000000         ;<h> Stack Configuration
+   31 00000000         ;  <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
+   32 00000000         ;</h>
+   33 00000000         
+   34 00000000 00001000 
+                       Stack_Size
+                               EQU              0x00001000
+   35 00000000         
+   36 00000000                 AREA             STACK, NOINIT, READWRITE, ALIGN
+=3
+   37 00000000         __stack_limit
+   38 00000000         Stack_Mem
+                               SPACE            Stack_Size
+   39 00001000         __initial_sp
+   40 00001000         
+   41 00001000         
+   42 00001000         ;<h> Heap Configuration
+   43 00001000         ;  <o> Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
+   44 00001000         ;</h>
+   45 00001000         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   46 00001000 00000000 
+                       Heap_Size
+                               EQU              0x00000000
+   47 00001000         
+   48 00001000                 IF               Heap_Size != 0 
+                                                            ; Heap is provided
+   53                          ENDIF
+   54 00001000         
+   55 00001000         
+   56 00001000                 PRESERVE8
+   57 00001000                 THUMB
+   58 00001000         
+   59 00001000         
+   60 00001000         ; Vector Table Mapped to Address 0 at Reset
+   61 00001000         
+   62 00001000                 AREA             RESET, DATA, READONLY
+   63 00000000                 EXPORT           __Vectors
+   64 00000000                 EXPORT           __Vectors_End
+   65 00000000                 EXPORT           __Vectors_Size
+   66 00000000         
+   67 00000000 00000000 
+                       __Vectors
+                               DCD              __initial_sp ;     Top of Stack
+                                                            
+   68 00000004 00000000        DCD              Reset_Handler 
+                                                            ;     Reset Handler
+                                                            
+   69 00000008 00000000        DCD              NMI_Handler ; -14 NMI Handler
+   70 0000000C 00000000        DCD              HardFault_Handler ; -13 Hard Fa
+                                                            ult Handler
+   71 00000010 00000000        DCD              MemoryManagement_Handler ; -12 
+                                                            MPU Fault Handler
+   72 00000014 00000000        DCD              BusFault_Handler ; -11 Bus Faul
+                                                            t Handler
+   73 00000018 00000000        DCD              UsageFault_Handler ; -10 Usage 
+                                                            Fault Handler
+   74 0000001C 00000000        DCD              0           ;  -9 Secure Fault 
+                                                            Handler
+   75 00000020 00000000        DCD              0           ;     Reserved
+   76 00000024 00000000        DCD              0           ;     Reserved
+   77 00000028 00000000        DCD              0           ;     Reserved
+   78 0000002C 00000000        DCD              SVC_Handler ;  -5 SVCall Handle
+                                                            r
+   79 00000030 00000000        DCD              DebugMon_Handler ;  -4 Debug Mo
+                                                            nitor Handler
+   80 00000034 00000000        DCD              0           ;     Reserved
+   81 00000038 00000000        DCD              PendSV_Handler ;  -2 PendSV Han
+                                                            dler
+   82 0000003C 00000000        DCD              SysTick_Handler ;  -1 SysTick H
+                                                            andler
+   83 00000040         
+   84 00000040         ; Interrupts
+   85 00000040 00000000        DCD              RTC_CH0_IRQ_Handler
+   86 00000044 00000000        DCD              GPADC0_IRQ_Handler
+   87 00000048 00000000        DCD              LLC_IRQ_Handler
+   88 0000004C 00000000        DCD              I2S_IRQ_Handler
+   89 00000050 00000000        DCD              QDEC_IRQ_Handler
+   90 00000054 00000000        DCD              AUDIO0_IRQ_Handler
+   91 00000058 00000000        DCD              CRYPT0_IRQ_Handler
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   92 0000005C 00000000        DCD              TRNG_IRQ_Handler
+   93 00000060 00000000        DCD              RF_CAL_IRQ_Handler
+   94 00000064 00000000        DCD              UART0_IRQ_Handler
+   95 00000068 00000000        DCD              UART1_IRQ_Handler
+   96 0000006C 00000000        DCD              UART2_IRQ_Handler
+   97 00000070 00000000        DCD              SPI0_IRQ_Handler
+   98 00000074 00000000        DCD              SPI1_IRQ_Handler
+   99 00000078 00000000        DCD              I2C0_IRQ_Handler
+  100 0000007C 00000000        DCD              I2C1_IRQ_Handler
+  101 00000080 00000000        DCD              I2C2_IRQ_Handler
+  102 00000084 00000000        DCD              DMA_IRQ0_Handler
+  103 00000088 00000000        DCD              DMA_IRQ4_Handler
+  104 0000008C 00000000        DCD              TIMER0_IRQ_Handler
+  105 00000090 00000000        DCD              GPIO_IRQ0_Handler
+  106 00000094 00000000        DCD              GPIO_IRQ1_Handler
+  107 00000098 00000000        DCD              GPIO_IRQ2_Handler
+  108 0000009C 00000000        DCD              PMU_IRQ_Handler
+  109 000000A0 00000000        DCD              QSPI0_IRQ_Handler
+  110 000000A4 00000000        DCD              QSPI1_IRQ_Handler
+  111 000000A8 00000000        DCD              QSPI2_IRQ_Handler
+  112 000000AC 00000000        DCD              QSPI3_IRQ_Handler
+  113 000000B0 00000000        DCD              SW_IRQ0_Handler
+  114 000000B4 00000000        DCD              SW_IRQ1_Handler
+  115 000000B8 00000000        DCD              USB_IRQ_Handler
+  116 000000BC 00000000        DCD              RTC_CH3_IRQ_Handler
+  117 000000C0 00000000        DCD              DMA_IRQ1_Handler
+  118 000000C4 00000000        DCD              DMA_IRQ2_Handler
+  119 000000C8 00000000        DCD              DMA_IRQ3_Handler
+  120 000000CC 00000000        DCD              DMA_IRQ5_Handler
+  121 000000D0 00000000        DCD              DMA_IRQ6_Handler
+  122 000000D4 00000000        DCD              DMA_IRQ7_Handler
+  123 000000D8 00000000        DCD              TIMER1_IRQ_Handler
+  124 000000DC 00000000        DCD              TIMER2_IRQ_Handler
+  125 000000E0 00000000        DCD              TIMER3_IRQ_Handler
+  126 000000E4 00000000        DCD              SW_IRQ2_Handler
+  127 000000E8 00000000        DCD              FP_IRQ_Handler
+  128 000000EC 00000000        DCD              RTC_CH1_IRQ_Handler
+  129 000000F0 00000000        DCD              RTC_CH2_IRQ_Handler
+  130 000000F4 00000000        DCD              AUDIO1_IRQ_Handler
+  131 000000F8 00000000        DCD              GPADC1_IRQ_Handler
+  132 000000FC 00000000        DCD              I2C3_IRQ_Handler
+  133 00000100 00000000        DCD              USB_PHY_IRQ_Handler
+  134 00000104 00000000        DCD              STIM0_IRQ0_Handler
+  135 00000108 00000000        DCD              STIM0_IRQ1_Handler
+  136 0000010C 00000000        DCD              STIM0_IRQ2_Handler
+  137 00000110 00000000        DCD              STIM0_IRQ3_Handler
+  138 00000114 00000000        DCD              STIM1_IRQ0_Handler
+  139 00000118 00000000        DCD              STIM1_IRQ1_Handler
+  140 0000011C 00000000        DCD              STIM1_IRQ2_Handler
+  141 00000120 00000000        DCD              STIM1_IRQ3_Handler
+  142 00000124 00000000        DCD              WDT1_IRQ_Handler
+  143 00000128 00000000        DCD              CRYPT1_IRQ_Handler
+  144 0000012C         
+  145 0000012C 00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+              00 00 00 
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+              00 00            SPACE            (5 * 4)     ; Interrupts 59 .. 
+                                                            63 are left out
+  146 00000140         __Vectors_End
+  147 00000140 00000140 
+                       __Vectors_Size
+                               EQU              __Vectors_End - __Vectors
+  148 00000140         
+  149 00000140         
+  150 00000140                 AREA             |.text|, CODE, READONLY
+  151 00000000         
+  152 00000000         ; Reset_Handler
+  153 00000000         Reset_Handler
+                               PROC
+  154 00000000                 EXPORT           Reset_Handler
+  155 00000000                 IMPORT           SystemInit
+  156 00000000                 IMPORT           __main
+  157 00000000         
+  158 00000000 482E            LDR              R0, =__initial_sp
+  159 00000002 F380 8808       MSR              MSP, R0
+  160 00000006 482E            LDR              R0, =__stack_limit
+  161 00000008 F380 880A       MSR              MSPLIM, R0  ; Non-secure versio
+                                                            n of MSPLIM is RAZ/
+                                                            WI
+  162 0000000C         
+  163 0000000C 482D            LDR              R0, =SystemInit
+  164 0000000E 4780            BLX              R0
+  165 00000010 482D            LDR              R0, =__main
+  166 00000012 4700            BX               R0
+  167 00000014                 ENDP
+  168 00000014         
+  169 00000014         ; NMI_Handler
+  170 00000014         NMI_Handler
+                               PROC
+  171 00000014                 EXPORT           NMI_Handler
+  172 00000014                 IMPORT           NMI_Handler_Proc
+  173 00000014         
+  174 00000014 EA5F 000E       MOVS             R0, LR
+  175 00000018 F3EF 8108       MRS              R1, MSP
+  176 0000001C F3EF 8209       MRS              R2, PSP
+  177 00000020         
+  178 00000020 4B2A            LDR              R3, =NMI_Handler_Proc
+  179 00000022 4798            BLX              R3
+  180 00000024         
+  181 00000024 E7FE            B                .
+  182 00000026                 ENDP
+  183 00000026         
+  184 00000026         ; HardFault_Handler
+  185 00000026         HardFault_Handler
+                               PROC
+  186 00000026                 EXPORT           HardFault_Handler
+  187 00000026                 IMPORT           HardFault_Handler_Proc
+  188 00000026         
+  189 00000026 EA5F 000E       MOVS             R0, LR
+  190 0000002A F3EF 8108       MRS              R1, MSP
+  191 0000002E F3EF 8209       MRS              R2, PSP
+  192 00000032         
+  193 00000032 4B27            LDR              R3, =HardFault_Handler_Proc
+  194 00000034 4798            BLX              R3
+  195 00000036         
+
+
+
+ARM Macro Assembler    Page 5 
+
+
+  196 00000036 E7FE            B                .
+  197 00000038                 ENDP
+  198 00000038         
+  199 00000038         
+  200 00000038         
+  201 00000038         ; Macro to define default exception/interrupt handlers.
+  202 00000038         ; Default handler are weak symbols with an endless loop.
+                       
+  203 00000038         ; They can be overwritten by real handlers.
+  204 00000038                 MACRO
+  205 00000038                 Set_Default_Handler
+                                                $Handler_Name
+  206 00000038         $Handler_Name
+                               PROC
+  207 00000038                 EXPORT           $Handler_Name             [WEAK
+]
+  208 00000038                 B                .
+  209 00000038                 ENDP
+  210 00000038                 MEND
+  211 00000038         
+  212 00000038         ; Default exception/interrupt handler
+  213 00000038                 Set_Default_Handler
+                                                MemoryManagement_Handler
+  206 00000038         MemoryManagement_Handler
+                               PROC
+  207 00000038                 EXPORT           MemoryManagement_Handler       
+      [WEAK]
+  208 00000038 E7FE            B                .
+  209 0000003A                 ENDP
+  214 0000003A                 Set_Default_Handler
+                                                BusFault_Handler
+  206 0000003A         BusFault_Handler
+                               PROC
+  207 0000003A                 EXPORT           BusFault_Handler             [W
+EAK]
+  208 0000003A E7FE            B                .
+  209 0000003C                 ENDP
+  215 0000003C                 Set_Default_Handler
+                                                UsageFault_Handler
+  206 0000003C         UsageFault_Handler
+                               PROC
+  207 0000003C                 EXPORT           UsageFault_Handler             
+[WEAK]
+  208 0000003C E7FE            B                .
+  209 0000003E                 ENDP
+  216 0000003E                 Set_Default_Handler
+                                                SVC_Handler
+  206 0000003E         SVC_Handler
+                               PROC
+  207 0000003E                 EXPORT           SVC_Handler             [WEAK]
+  208 0000003E E7FE            B                .
+  209 00000040                 ENDP
+  217 00000040                 Set_Default_Handler
+                                                DebugMon_Handler
+  206 00000040         DebugMon_Handler
+                               PROC
+  207 00000040                 EXPORT           DebugMon_Handler             [W
+EAK]
+  208 00000040 E7FE            B                .
+
+
+
+ARM Macro Assembler    Page 6 
+
+
+  209 00000042                 ENDP
+  218 00000042                 Set_Default_Handler
+                                                PendSV_Handler
+  206 00000042         PendSV_Handler
+                               PROC
+  207 00000042                 EXPORT           PendSV_Handler             [WEA
+K]
+  208 00000042 E7FE            B                .
+  209 00000044                 ENDP
+  219 00000044                 Set_Default_Handler
+                                                SysTick_Handler
+  206 00000044         SysTick_Handler
+                               PROC
+  207 00000044                 EXPORT           SysTick_Handler             [WE
+AK]
+  208 00000044 E7FE            B                .
+  209 00000046                 ENDP
+  220 00000046         
+  221 00000046                 Set_Default_Handler
+                                                RTC_CH0_IRQ_Handler
+  206 00000046         RTC_CH0_IRQ_Handler
+                               PROC
+  207 00000046                 EXPORT           RTC_CH0_IRQ_Handler            
+ [WEAK]
+  208 00000046 E7FE            B                .
+  209 00000048                 ENDP
+  222 00000048                 Set_Default_Handler
+                                                GPADC0_IRQ_Handler
+  206 00000048         GPADC0_IRQ_Handler
+                               PROC
+  207 00000048                 EXPORT           GPADC0_IRQ_Handler             
+[WEAK]
+  208 00000048 E7FE            B                .
+  209 0000004A                 ENDP
+  223 0000004A                 Set_Default_Handler
+                                                LLC_IRQ_Handler
+  206 0000004A         LLC_IRQ_Handler
+                               PROC
+  207 0000004A                 EXPORT           LLC_IRQ_Handler             [WE
+AK]
+  208 0000004A E7FE            B                .
+  209 0000004C                 ENDP
+  224 0000004C                 Set_Default_Handler
+                                                I2S_IRQ_Handler
+  206 0000004C         I2S_IRQ_Handler
+                               PROC
+  207 0000004C                 EXPORT           I2S_IRQ_Handler             [WE
+AK]
+  208 0000004C E7FE            B                .
+  209 0000004E                 ENDP
+  225 0000004E                 Set_Default_Handler
+                                                QDEC_IRQ_Handler
+  206 0000004E         QDEC_IRQ_Handler
+                               PROC
+  207 0000004E                 EXPORT           QDEC_IRQ_Handler             [W
+EAK]
+  208 0000004E E7FE            B                .
+  209 00000050                 ENDP
+  226 00000050                 Set_Default_Handler
+
+
+
+ARM Macro Assembler    Page 7 
+
+
+                                                AUDIO0_IRQ_Handler
+  206 00000050         AUDIO0_IRQ_Handler
+                               PROC
+  207 00000050                 EXPORT           AUDIO0_IRQ_Handler             
+[WEAK]
+  208 00000050 E7FE            B                .
+  209 00000052                 ENDP
+  227 00000052                 Set_Default_Handler
+                                                CRYPT0_IRQ_Handler
+  206 00000052         CRYPT0_IRQ_Handler
+                               PROC
+  207 00000052                 EXPORT           CRYPT0_IRQ_Handler             
+[WEAK]
+  208 00000052 E7FE            B                .
+  209 00000054                 ENDP
+  228 00000054                 Set_Default_Handler
+                                                TRNG_IRQ_Handler
+  206 00000054         TRNG_IRQ_Handler
+                               PROC
+  207 00000054                 EXPORT           TRNG_IRQ_Handler             [W
+EAK]
+  208 00000054 E7FE            B                .
+  209 00000056                 ENDP
+  229 00000056                 Set_Default_Handler
+                                                RF_CAL_IRQ_Handler
+  206 00000056         RF_CAL_IRQ_Handler
+                               PROC
+  207 00000056                 EXPORT           RF_CAL_IRQ_Handler             
+[WEAK]
+  208 00000056 E7FE            B                .
+  209 00000058                 ENDP
+  230 00000058                 Set_Default_Handler
+                                                UART0_IRQ_Handler
+  206 00000058         UART0_IRQ_Handler
+                               PROC
+  207 00000058                 EXPORT           UART0_IRQ_Handler             [
+WEAK]
+  208 00000058 E7FE            B                .
+  209 0000005A                 ENDP
+  231 0000005A                 Set_Default_Handler
+                                                UART1_IRQ_Handler
+  206 0000005A         UART1_IRQ_Handler
+                               PROC
+  207 0000005A                 EXPORT           UART1_IRQ_Handler             [
+WEAK]
+  208 0000005A E7FE            B                .
+  209 0000005C                 ENDP
+  232 0000005C                 Set_Default_Handler
+                                                UART2_IRQ_Handler
+  206 0000005C         UART2_IRQ_Handler
+                               PROC
+  207 0000005C                 EXPORT           UART2_IRQ_Handler             [
+WEAK]
+  208 0000005C E7FE            B                .
+  209 0000005E                 ENDP
+  233 0000005E                 Set_Default_Handler
+                                                SPI0_IRQ_Handler
+  206 0000005E         SPI0_IRQ_Handler
+                               PROC
+
+
+
+ARM Macro Assembler    Page 8 
+
+
+  207 0000005E                 EXPORT           SPI0_IRQ_Handler             [W
+EAK]
+  208 0000005E E7FE            B                .
+  209 00000060                 ENDP
+  234 00000060                 Set_Default_Handler
+                                                SPI1_IRQ_Handler
+  206 00000060         SPI1_IRQ_Handler
+                               PROC
+  207 00000060                 EXPORT           SPI1_IRQ_Handler             [W
+EAK]
+  208 00000060 E7FE            B                .
+  209 00000062                 ENDP
+  235 00000062                 Set_Default_Handler
+                                                I2C0_IRQ_Handler
+  206 00000062         I2C0_IRQ_Handler
+                               PROC
+  207 00000062                 EXPORT           I2C0_IRQ_Handler             [W
+EAK]
+  208 00000062 E7FE            B                .
+  209 00000064                 ENDP
+  236 00000064                 Set_Default_Handler
+                                                I2C1_IRQ_Handler
+  206 00000064         I2C1_IRQ_Handler
+                               PROC
+  207 00000064                 EXPORT           I2C1_IRQ_Handler             [W
+EAK]
+  208 00000064 E7FE            B                .
+  209 00000066                 ENDP
+  237 00000066                 Set_Default_Handler
+                                                I2C2_IRQ_Handler
+  206 00000066         I2C2_IRQ_Handler
+                               PROC
+  207 00000066                 EXPORT           I2C2_IRQ_Handler             [W
+EAK]
+  208 00000066 E7FE            B                .
+  209 00000068                 ENDP
+  238 00000068                 Set_Default_Handler
+                                                DMA_IRQ0_Handler
+  206 00000068         DMA_IRQ0_Handler
+                               PROC
+  207 00000068                 EXPORT           DMA_IRQ0_Handler             [W
+EAK]
+  208 00000068 E7FE            B                .
+  209 0000006A                 ENDP
+  239 0000006A                 Set_Default_Handler
+                                                DMA_IRQ4_Handler
+  206 0000006A         DMA_IRQ4_Handler
+                               PROC
+  207 0000006A                 EXPORT           DMA_IRQ4_Handler             [W
+EAK]
+  208 0000006A E7FE            B                .
+  209 0000006C                 ENDP
+  240 0000006C                 Set_Default_Handler
+                                                TIMER0_IRQ_Handler
+  206 0000006C         TIMER0_IRQ_Handler
+                               PROC
+  207 0000006C                 EXPORT           TIMER0_IRQ_Handler             
+[WEAK]
+  208 0000006C E7FE            B                .
+
+
+
+ARM Macro Assembler    Page 9 
+
+
+  209 0000006E                 ENDP
+  241 0000006E                 Set_Default_Handler
+                                                GPIO_IRQ0_Handler
+  206 0000006E         GPIO_IRQ0_Handler
+                               PROC
+  207 0000006E                 EXPORT           GPIO_IRQ0_Handler             [
+WEAK]
+  208 0000006E E7FE            B                .
+  209 00000070                 ENDP
+  242 00000070                 Set_Default_Handler
+                                                GPIO_IRQ1_Handler
+  206 00000070         GPIO_IRQ1_Handler
+                               PROC
+  207 00000070                 EXPORT           GPIO_IRQ1_Handler             [
+WEAK]
+  208 00000070 E7FE            B                .
+  209 00000072                 ENDP
+  243 00000072                 Set_Default_Handler
+                                                GPIO_IRQ2_Handler
+  206 00000072         GPIO_IRQ2_Handler
+                               PROC
+  207 00000072                 EXPORT           GPIO_IRQ2_Handler             [
+WEAK]
+  208 00000072 E7FE            B                .
+  209 00000074                 ENDP
+  244 00000074                 Set_Default_Handler
+                                                PMU_IRQ_Handler
+  206 00000074         PMU_IRQ_Handler
+                               PROC
+  207 00000074                 EXPORT           PMU_IRQ_Handler             [WE
+AK]
+  208 00000074 E7FE            B                .
+  209 00000076                 ENDP
+  245 00000076                 Set_Default_Handler
+                                                QSPI0_IRQ_Handler
+  206 00000076         QSPI0_IRQ_Handler
+                               PROC
+  207 00000076                 EXPORT           QSPI0_IRQ_Handler             [
+WEAK]
+  208 00000076 E7FE            B                .
+  209 00000078                 ENDP
+  246 00000078                 Set_Default_Handler
+                                                QSPI1_IRQ_Handler
+  206 00000078         QSPI1_IRQ_Handler
+                               PROC
+  207 00000078                 EXPORT           QSPI1_IRQ_Handler             [
+WEAK]
+  208 00000078 E7FE            B                .
+  209 0000007A                 ENDP
+  247 0000007A                 Set_Default_Handler
+                                                QSPI2_IRQ_Handler
+  206 0000007A         QSPI2_IRQ_Handler
+                               PROC
+  207 0000007A                 EXPORT           QSPI2_IRQ_Handler             [
+WEAK]
+  208 0000007A E7FE            B                .
+  209 0000007C                 ENDP
+  248 0000007C                 Set_Default_Handler
+                                                QSPI3_IRQ_Handler
+
+
+
+ARM Macro Assembler    Page 10 
+
+
+  206 0000007C         QSPI3_IRQ_Handler
+                               PROC
+  207 0000007C                 EXPORT           QSPI3_IRQ_Handler             [
+WEAK]
+  208 0000007C E7FE            B                .
+  209 0000007E                 ENDP
+  249 0000007E                 Set_Default_Handler
+                                                SW_IRQ0_Handler
+  206 0000007E         SW_IRQ0_Handler
+                               PROC
+  207 0000007E                 EXPORT           SW_IRQ0_Handler             [WE
+AK]
+  208 0000007E E7FE            B                .
+  209 00000080                 ENDP
+  250 00000080                 Set_Default_Handler
+                                                SW_IRQ1_Handler
+  206 00000080         SW_IRQ1_Handler
+                               PROC
+  207 00000080                 EXPORT           SW_IRQ1_Handler             [WE
+AK]
+  208 00000080 E7FE            B                .
+  209 00000082                 ENDP
+  251 00000082                 Set_Default_Handler
+                                                USB_IRQ_Handler
+  206 00000082         USB_IRQ_Handler
+                               PROC
+  207 00000082                 EXPORT           USB_IRQ_Handler             [WE
+AK]
+  208 00000082 E7FE            B                .
+  209 00000084                 ENDP
+  252 00000084                 Set_Default_Handler
+                                                RTC_CH3_IRQ_Handler
+  206 00000084         RTC_CH3_IRQ_Handler
+                               PROC
+  207 00000084                 EXPORT           RTC_CH3_IRQ_Handler            
+ [WEAK]
+  208 00000084 E7FE            B                .
+  209 00000086                 ENDP
+  253 00000086                 Set_Default_Handler
+                                                DMA_IRQ1_Handler
+  206 00000086         DMA_IRQ1_Handler
+                               PROC
+  207 00000086                 EXPORT           DMA_IRQ1_Handler             [W
+EAK]
+  208 00000086 E7FE            B                .
+  209 00000088                 ENDP
+  254 00000088                 Set_Default_Handler
+                                                DMA_IRQ2_Handler
+  206 00000088         DMA_IRQ2_Handler
+                               PROC
+  207 00000088                 EXPORT           DMA_IRQ2_Handler             [W
+EAK]
+  208 00000088 E7FE            B                .
+  209 0000008A                 ENDP
+  255 0000008A                 Set_Default_Handler
+                                                DMA_IRQ3_Handler
+  206 0000008A         DMA_IRQ3_Handler
+                               PROC
+  207 0000008A                 EXPORT           DMA_IRQ3_Handler             [W
+
+
+
+ARM Macro Assembler    Page 11 
+
+
+EAK]
+  208 0000008A E7FE            B                .
+  209 0000008C                 ENDP
+  256 0000008C                 Set_Default_Handler
+                                                DMA_IRQ5_Handler
+  206 0000008C         DMA_IRQ5_Handler
+                               PROC
+  207 0000008C                 EXPORT           DMA_IRQ5_Handler             [W
+EAK]
+  208 0000008C E7FE            B                .
+  209 0000008E                 ENDP
+  257 0000008E                 Set_Default_Handler
+                                                DMA_IRQ6_Handler
+  206 0000008E         DMA_IRQ6_Handler
+                               PROC
+  207 0000008E                 EXPORT           DMA_IRQ6_Handler             [W
+EAK]
+  208 0000008E E7FE            B                .
+  209 00000090                 ENDP
+  258 00000090                 Set_Default_Handler
+                                                DMA_IRQ7_Handler
+  206 00000090         DMA_IRQ7_Handler
+                               PROC
+  207 00000090                 EXPORT           DMA_IRQ7_Handler             [W
+EAK]
+  208 00000090 E7FE            B                .
+  209 00000092                 ENDP
+  259 00000092                 Set_Default_Handler
+                                                TIMER1_IRQ_Handler
+  206 00000092         TIMER1_IRQ_Handler
+                               PROC
+  207 00000092                 EXPORT           TIMER1_IRQ_Handler             
+[WEAK]
+  208 00000092 E7FE            B                .
+  209 00000094                 ENDP
+  260 00000094                 Set_Default_Handler
+                                                TIMER2_IRQ_Handler
+  206 00000094         TIMER2_IRQ_Handler
+                               PROC
+  207 00000094                 EXPORT           TIMER2_IRQ_Handler             
+[WEAK]
+  208 00000094 E7FE            B                .
+  209 00000096                 ENDP
+  261 00000096                 Set_Default_Handler
+                                                TIMER3_IRQ_Handler
+  206 00000096         TIMER3_IRQ_Handler
+                               PROC
+  207 00000096                 EXPORT           TIMER3_IRQ_Handler             
+[WEAK]
+  208 00000096 E7FE            B                .
+  209 00000098                 ENDP
+  262 00000098                 Set_Default_Handler
+                                                SW_IRQ2_Handler
+  206 00000098         SW_IRQ2_Handler
+                               PROC
+  207 00000098                 EXPORT           SW_IRQ2_Handler             [WE
+AK]
+  208 00000098 E7FE            B                .
+  209 0000009A                 ENDP
+
+
+
+ARM Macro Assembler    Page 12 
+
+
+  263 0000009A                 Set_Default_Handler
+                                                FP_IRQ_Handler
+  206 0000009A         FP_IRQ_Handler
+                               PROC
+  207 0000009A                 EXPORT           FP_IRQ_Handler             [WEA
+K]
+  208 0000009A E7FE            B                .
+  209 0000009C                 ENDP
+  264 0000009C                 Set_Default_Handler
+                                                RTC_CH1_IRQ_Handler
+  206 0000009C         RTC_CH1_IRQ_Handler
+                               PROC
+  207 0000009C                 EXPORT           RTC_CH1_IRQ_Handler            
+ [WEAK]
+  208 0000009C E7FE            B                .
+  209 0000009E                 ENDP
+  265 0000009E                 Set_Default_Handler
+                                                RTC_CH2_IRQ_Handler
+  206 0000009E         RTC_CH2_IRQ_Handler
+                               PROC
+  207 0000009E                 EXPORT           RTC_CH2_IRQ_Handler            
+ [WEAK]
+  208 0000009E E7FE            B                .
+  209 000000A0                 ENDP
+  266 000000A0                 Set_Default_Handler
+                                                AUDIO1_IRQ_Handler
+  206 000000A0         AUDIO1_IRQ_Handler
+                               PROC
+  207 000000A0                 EXPORT           AUDIO1_IRQ_Handler             
+[WEAK]
+  208 000000A0 E7FE            B                .
+  209 000000A2                 ENDP
+  267 000000A2                 Set_Default_Handler
+                                                GPADC1_IRQ_Handler
+  206 000000A2         GPADC1_IRQ_Handler
+                               PROC
+  207 000000A2                 EXPORT           GPADC1_IRQ_Handler             
+[WEAK]
+  208 000000A2 E7FE            B                .
+  209 000000A4                 ENDP
+  268 000000A4                 Set_Default_Handler
+                                                I2C3_IRQ_Handler
+  206 000000A4         I2C3_IRQ_Handler
+                               PROC
+  207 000000A4                 EXPORT           I2C3_IRQ_Handler             [W
+EAK]
+  208 000000A4 E7FE            B                .
+  209 000000A6                 ENDP
+  269 000000A6                 Set_Default_Handler
+                                                USB_PHY_IRQ_Handler
+  206 000000A6         USB_PHY_IRQ_Handler
+                               PROC
+  207 000000A6                 EXPORT           USB_PHY_IRQ_Handler            
+ [WEAK]
+  208 000000A6 E7FE            B                .
+  209 000000A8                 ENDP
+  270 000000A8                 Set_Default_Handler
+                                                STIM0_IRQ0_Handler
+  206 000000A8         STIM0_IRQ0_Handler
+
+
+
+ARM Macro Assembler    Page 13 
+
+
+                               PROC
+  207 000000A8                 EXPORT           STIM0_IRQ0_Handler             
+[WEAK]
+  208 000000A8 E7FE            B                .
+  209 000000AA                 ENDP
+  271 000000AA                 Set_Default_Handler
+                                                STIM0_IRQ1_Handler
+  206 000000AA         STIM0_IRQ1_Handler
+                               PROC
+  207 000000AA                 EXPORT           STIM0_IRQ1_Handler             
+[WEAK]
+  208 000000AA E7FE            B                .
+  209 000000AC                 ENDP
+  272 000000AC                 Set_Default_Handler
+                                                STIM0_IRQ2_Handler
+  206 000000AC         STIM0_IRQ2_Handler
+                               PROC
+  207 000000AC                 EXPORT           STIM0_IRQ2_Handler             
+[WEAK]
+  208 000000AC E7FE            B                .
+  209 000000AE                 ENDP
+  273 000000AE                 Set_Default_Handler
+                                                STIM0_IRQ3_Handler
+  206 000000AE         STIM0_IRQ3_Handler
+                               PROC
+  207 000000AE                 EXPORT           STIM0_IRQ3_Handler             
+[WEAK]
+  208 000000AE E7FE            B                .
+  209 000000B0                 ENDP
+  274 000000B0                 Set_Default_Handler
+                                                STIM1_IRQ0_Handler
+  206 000000B0         STIM1_IRQ0_Handler
+                               PROC
+  207 000000B0                 EXPORT           STIM1_IRQ0_Handler             
+[WEAK]
+  208 000000B0 E7FE            B                .
+  209 000000B2                 ENDP
+  275 000000B2                 Set_Default_Handler
+                                                STIM1_IRQ1_Handler
+  206 000000B2         STIM1_IRQ1_Handler
+                               PROC
+  207 000000B2                 EXPORT           STIM1_IRQ1_Handler             
+[WEAK]
+  208 000000B2 E7FE            B                .
+  209 000000B4                 ENDP
+  276 000000B4                 Set_Default_Handler
+                                                STIM1_IRQ2_Handler
+  206 000000B4         STIM1_IRQ2_Handler
+                               PROC
+  207 000000B4                 EXPORT           STIM1_IRQ2_Handler             
+[WEAK]
+  208 000000B4 E7FE            B                .
+  209 000000B6                 ENDP
+  277 000000B6                 Set_Default_Handler
+                                                STIM1_IRQ3_Handler
+  206 000000B6         STIM1_IRQ3_Handler
+                               PROC
+  207 000000B6                 EXPORT           STIM1_IRQ3_Handler             
+[WEAK]
+
+
+
+ARM Macro Assembler    Page 14 
+
+
+  208 000000B6 E7FE            B                .
+  209 000000B8                 ENDP
+  278 000000B8                 Set_Default_Handler
+                                                WDT1_IRQ_Handler
+  206 000000B8         WDT1_IRQ_Handler
+                               PROC
+  207 000000B8                 EXPORT           WDT1_IRQ_Handler             [W
+EAK]
+  208 000000B8 E7FE            B                .
+  209 000000BA                 ENDP
+  279 000000BA                 Set_Default_Handler
+                                                CRYPT1_IRQ_Handler
+  206 000000BA         CRYPT1_IRQ_Handler
+                               PROC
+  207 000000BA                 EXPORT           CRYPT1_IRQ_Handler             
+[WEAK]
+  208 000000BA E7FE            B                .
+  209 000000BC                 ENDP
+  280 000000BC         
+  281 000000BC                 ALIGN
+  282 000000BC         
+  283 000000BC         
+  284 000000BC         ; User setup Stack & Heap
+  285 000000BC         
+  286 000000BC                 IF               :LNOT::DEF:__MICROLIB
+  288                          ENDIF
+  289 000000BC         
+  290 000000BC                 EXPORT           __stack_limit
+  291 000000BC                 EXPORT           __initial_sp
+  292 000000BC                 IF               Heap_Size != 0 
+                                                            ; Heap is provided
+  295                          ENDIF
+  296 000000BC         
+  297 000000BC                 END
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931,A1950W --cpu=Cortex-M33 --fpu
+=FPv5-SP --depend=.\objects\startup_armcm33.d -o.\objects\startup_armcm33.o -I.
+\RTE\_gpio -IC:\Users\user\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\Core\I
+nclude -IC:\Users\user\AppData\Local\Arm\Packs\Holtek\HT32F675x5_DFP\1.0.5\Devi
+ce\Include -IC:\Users\user\AppData\Local\Arm\Packs\Holtek\HT32F675x5_DFP\1.0.5\
+Device\ARM\ARMCM33\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISI
+ON_VERSION SETA 543" --predefine="_RTE_ SETA 1" --predefine="__MAIN_PROCESSOR S
+ETA 1" --list=.\listings\startup_armcm33.lst ..\..\..\..\..\sources\device\ht32
+f675x5\Source\ARM\startup_ARMCM33.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+STACK 00000000
+
+Symbol: STACK
+   Definitions
+      At line 36 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+   Uses
+      None
+Comment: STACK unused
+Stack_Mem 00000000
+
+Symbol: Stack_Mem
+   Definitions
+      At line 38 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+   Uses
+      None
+Comment: Stack_Mem unused
+__initial_sp 00001000
+
+Symbol: __initial_sp
+   Definitions
+      At line 39 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+   Uses
+      At line 67 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 158 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 291 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+__stack_limit 00000000
+
+Symbol: __stack_limit
+   Definitions
+      At line 37 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+   Uses
+      At line 160 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 290 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 62 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+   Uses
+      None
+Comment: RESET unused
+__Vectors 00000000
+
+Symbol: __Vectors
+   Definitions
+      At line 67 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+   Uses
+      At line 63 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 147 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+__Vectors_End 00000140
+
+Symbol: __Vectors_End
+   Definitions
+      At line 146 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 64 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 147 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+.text 00000000
+
+Symbol: .text
+   Definitions
+      At line 150 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      None
+Comment: .text unused
+AUDIO0_IRQ_Handler 00000050
+
+Symbol: AUDIO0_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 226 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 90 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 226 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+AUDIO1_IRQ_Handler 000000A0
+
+Symbol: AUDIO1_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 266 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 130 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 266 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+BusFault_Handler 0000003A
+
+Symbol: BusFault_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 214 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 72 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 214 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+CRYPT0_IRQ_Handler 00000052
+
+Symbol: CRYPT0_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 227 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 91 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 227 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+CRYPT1_IRQ_Handler 000000BA
+
+Symbol: CRYPT1_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 279 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 143 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 279 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+DMA_IRQ0_Handler 00000068
+
+Symbol: DMA_IRQ0_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 238 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 102 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 238 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+DMA_IRQ1_Handler 00000086
+
+Symbol: DMA_IRQ1_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 253 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 117 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 253 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+DMA_IRQ2_Handler 00000088
+
+Symbol: DMA_IRQ2_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 254 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 118 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+Relocatable symbols
+
+      at line 254 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+DMA_IRQ3_Handler 0000008A
+
+Symbol: DMA_IRQ3_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 255 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 119 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 255 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+DMA_IRQ4_Handler 0000006A
+
+Symbol: DMA_IRQ4_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 239 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 103 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 239 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+DMA_IRQ5_Handler 0000008C
+
+Symbol: DMA_IRQ5_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 256 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 120 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 256 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+DMA_IRQ6_Handler 0000008E
+
+Symbol: DMA_IRQ6_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 257 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 121 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 257 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+
+
+
+ARM Macro Assembler    Page 4 Alphabetic symbol ordering
+Relocatable symbols
+
+DMA_IRQ7_Handler 00000090
+
+Symbol: DMA_IRQ7_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 258 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 122 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 258 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+DebugMon_Handler 00000040
+
+Symbol: DebugMon_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 217 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 79 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 217 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+FP_IRQ_Handler 0000009A
+
+Symbol: FP_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 263 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 127 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 263 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+GPADC0_IRQ_Handler 00000048
+
+Symbol: GPADC0_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 222 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 86 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 222 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+GPADC1_IRQ_Handler 000000A2
+
+Symbol: GPADC1_IRQ_Handler
+
+
+
+ARM Macro Assembler    Page 5 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 267 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 131 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 267 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+GPIO_IRQ0_Handler 0000006E
+
+Symbol: GPIO_IRQ0_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 241 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 105 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 241 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+GPIO_IRQ1_Handler 00000070
+
+Symbol: GPIO_IRQ1_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 242 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 106 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 242 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+GPIO_IRQ2_Handler 00000072
+
+Symbol: GPIO_IRQ2_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 243 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 107 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 243 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+HardFault_Handler 00000026
+
+Symbol: HardFault_Handler
+   Definitions
+      At line 185 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+
+
+ARM Macro Assembler    Page 6 Alphabetic symbol ordering
+Relocatable symbols
+
+   Uses
+      At line 70 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 186 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+I2C0_IRQ_Handler 00000062
+
+Symbol: I2C0_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 235 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 99 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 235 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+I2C1_IRQ_Handler 00000064
+
+Symbol: I2C1_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 236 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 100 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 236 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+I2C2_IRQ_Handler 00000066
+
+Symbol: I2C2_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 237 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 101 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 237 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+I2C3_IRQ_Handler 000000A4
+
+Symbol: I2C3_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 268 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 132 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+
+
+
+ARM Macro Assembler    Page 7 Alphabetic symbol ordering
+Relocatable symbols
+
+      at line 268 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+I2S_IRQ_Handler 0000004C
+
+Symbol: I2S_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 224 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 88 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 224 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+LLC_IRQ_Handler 0000004A
+
+Symbol: LLC_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 223 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 87 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 223 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+MemoryManagement_Handler 00000038
+
+Symbol: MemoryManagement_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 213 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 71 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 213 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+NMI_Handler 00000014
+
+Symbol: NMI_Handler
+   Definitions
+      At line 170 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 69 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 171 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+PMU_IRQ_Handler 00000074
+
+
+
+
+ARM Macro Assembler    Page 8 Alphabetic symbol ordering
+Relocatable symbols
+
+Symbol: PMU_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 244 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 108 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 244 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+PendSV_Handler 00000042
+
+Symbol: PendSV_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 218 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 81 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 218 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+QDEC_IRQ_Handler 0000004E
+
+Symbol: QDEC_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 225 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 89 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 225 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+QSPI0_IRQ_Handler 00000076
+
+Symbol: QSPI0_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 245 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 109 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 245 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+QSPI1_IRQ_Handler 00000078
+
+Symbol: QSPI1_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+
+
+
+ARM Macro Assembler    Page 9 Alphabetic symbol ordering
+Relocatable symbols
+
+      at line 246 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 110 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 246 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+QSPI2_IRQ_Handler 0000007A
+
+Symbol: QSPI2_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 247 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 111 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 247 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+QSPI3_IRQ_Handler 0000007C
+
+Symbol: QSPI3_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 248 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 112 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 248 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+RF_CAL_IRQ_Handler 00000056
+
+Symbol: RF_CAL_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 229 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 93 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 229 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+RTC_CH0_IRQ_Handler 00000046
+
+Symbol: RTC_CH0_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 221 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 10 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 85 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 221 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+RTC_CH1_IRQ_Handler 0000009C
+
+Symbol: RTC_CH1_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 264 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 128 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 264 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+RTC_CH2_IRQ_Handler 0000009E
+
+Symbol: RTC_CH2_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 265 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 129 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 265 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+RTC_CH3_IRQ_Handler 00000084
+
+Symbol: RTC_CH3_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 252 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 116 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 252 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 153 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 68 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 154 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+
+
+ARM Macro Assembler    Page 11 Alphabetic symbol ordering
+Relocatable symbols
+
+
+SPI0_IRQ_Handler 0000005E
+
+Symbol: SPI0_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 233 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 97 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 233 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+SPI1_IRQ_Handler 00000060
+
+Symbol: SPI1_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 234 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 98 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 234 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+STIM0_IRQ0_Handler 000000A8
+
+Symbol: STIM0_IRQ0_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 270 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 134 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 270 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+STIM0_IRQ1_Handler 000000AA
+
+Symbol: STIM0_IRQ1_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 271 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 135 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 271 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+STIM0_IRQ2_Handler 000000AC
+
+
+
+
+ARM Macro Assembler    Page 12 Alphabetic symbol ordering
+Relocatable symbols
+
+Symbol: STIM0_IRQ2_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 272 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 136 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 272 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+STIM0_IRQ3_Handler 000000AE
+
+Symbol: STIM0_IRQ3_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 273 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 137 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 273 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+STIM1_IRQ0_Handler 000000B0
+
+Symbol: STIM1_IRQ0_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 274 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 138 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 274 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+STIM1_IRQ1_Handler 000000B2
+
+Symbol: STIM1_IRQ1_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 275 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 139 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 275 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+STIM1_IRQ2_Handler 000000B4
+
+Symbol: STIM1_IRQ2_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+
+
+
+ARM Macro Assembler    Page 13 Alphabetic symbol ordering
+Relocatable symbols
+
+      at line 276 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 140 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 276 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+STIM1_IRQ3_Handler 000000B6
+
+Symbol: STIM1_IRQ3_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 277 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 141 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 277 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+SVC_Handler 0000003E
+
+Symbol: SVC_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 216 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 78 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 216 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+SW_IRQ0_Handler 0000007E
+
+Symbol: SW_IRQ0_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 249 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 113 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 249 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+SW_IRQ1_Handler 00000080
+
+Symbol: SW_IRQ1_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 250 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 14 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 114 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 250 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+SW_IRQ2_Handler 00000098
+
+Symbol: SW_IRQ2_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 262 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 126 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 262 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+SysTick_Handler 00000044
+
+Symbol: SysTick_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 219 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 82 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 219 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+TIMER0_IRQ_Handler 0000006C
+
+Symbol: TIMER0_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 240 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 104 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 240 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+TIMER1_IRQ_Handler 00000092
+
+Symbol: TIMER1_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 259 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 123 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+
+
+
+ARM Macro Assembler    Page 15 Alphabetic symbol ordering
+Relocatable symbols
+
+      at line 259 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+TIMER2_IRQ_Handler 00000094
+
+Symbol: TIMER2_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 260 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 124 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 260 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+TIMER3_IRQ_Handler 00000096
+
+Symbol: TIMER3_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 261 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 125 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 261 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+TRNG_IRQ_Handler 00000054
+
+Symbol: TRNG_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 228 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 92 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 228 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+UART0_IRQ_Handler 00000058
+
+Symbol: UART0_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 230 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 94 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 230 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+
+
+
+ARM Macro Assembler    Page 16 Alphabetic symbol ordering
+Relocatable symbols
+
+UART1_IRQ_Handler 0000005A
+
+Symbol: UART1_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 231 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 95 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 231 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+UART2_IRQ_Handler 0000005C
+
+Symbol: UART2_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 232 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 96 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 232 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+USB_IRQ_Handler 00000082
+
+Symbol: USB_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 251 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 115 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 251 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+USB_PHY_IRQ_Handler 000000A6
+
+Symbol: USB_PHY_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 269 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 133 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 269 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+UsageFault_Handler 0000003C
+
+Symbol: UsageFault_Handler
+
+
+
+ARM Macro Assembler    Page 17 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 215 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 73 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 215 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+WDT1_IRQ_Handler 000000B8
+
+Symbol: WDT1_IRQ_Handler
+   Definitions
+      At line 206 in macro Set_Default_Handler
+      at line 278 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 142 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+      At line 207 in macro Set_Default_Handler
+      at line 278 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+70 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+Heap_Size 00000000
+
+Symbol: Heap_Size
+   Definitions
+      At line 46 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+   Uses
+      At line 48 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+      At line 292 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+
+Stack_Size 00001000
+
+Symbol: Stack_Size
+   Definitions
+      At line 34 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+   Uses
+      At line 38 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+Comment: Stack_Size used once
+__Vectors_Size 00000140
+
+Symbol: __Vectors_Size
+   Definitions
+      At line 147 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 65 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\st
+artup_ARMCM33.s
+Comment: __Vectors_Size used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+HardFault_Handler_Proc 00000000
+
+Symbol: HardFault_Handler_Proc
+   Definitions
+      At line 187 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 193 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+Comment: HardFault_Handler_Proc used once
+NMI_Handler_Proc 00000000
+
+Symbol: NMI_Handler_Proc
+   Definitions
+      At line 172 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 178 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+Comment: NMI_Handler_Proc used once
+SystemInit 00000000
+
+Symbol: SystemInit
+   Definitions
+      At line 155 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 163 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+Comment: SystemInit used once
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 156 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+   Uses
+      At line 165 in file ..\..\..\..\..\sources\device\ht32f675x5\Source\ARM\s
+tartup_ARMCM33.s
+Comment: __main used once
+4 symbols
+421 symbols in table

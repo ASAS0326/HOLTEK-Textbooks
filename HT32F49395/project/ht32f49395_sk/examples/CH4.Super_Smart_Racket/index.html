@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Super Smart Racket AI Receiver - EI9 Label Fixed</title>
+<style>
+:root{
+  --bg:#071321;
+  --panel:#0d1b2b;
+  --border:#29415c;
+  --text:#f4f7fb;
+  --muted:#86a9cf;
+  --ok:#46e0a3;
+  --danger:#ff6678;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+.wrap{
+  width:min(1460px,calc(100% - 30px));
+  margin:28px auto 50px;
+}
+.top{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+}
+.title h1{margin:0;font-size:36px}
+.sub{color:var(--muted);margin-top:6px}
+.status{
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:10px 15px;
+  color:var(--muted);
+  white-space:nowrap;
+}
+.status.on{color:var(--ok)}
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:20px 0;
+}
+button{
+  border:0;
+  border-radius:10px;
+  padding:12px 18px;
+  font-weight:700;
+  color:#fff;
+  background:#2f6eae;
+  cursor:pointer;
+}
+button.red{background:#7a3040}
+button.gray{background:#253e5d}
+button:disabled{opacity:.5;cursor:not-allowed}
+.main-layout{
+  display:grid;
+  grid-template-columns:minmax(680px,1fr) 390px;
+  gap:18px;
+  align-items:start;
+}
+.main-layout.log-hidden{
+  grid-template-columns:1fr;
+}
+.left-column{
+  min-width:0;
+}
+.log-column{
+  position:sticky;
+  top:18px;
+}
+.main-layout.log-hidden .log-column{
+  display:none;
+}
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:18px;
+}
+.panel h2{font-size:17px;margin:0 0 18px}
+.result{
+  font-size:76px;
+  font-weight:900;
+  min-height:105px;
+  display:flex;
+  align-items:center;
+}
+.cap{
+  color:var(--muted);
+  font-size:13px;
+  letter-spacing:2px;
+}
+.conf{font-size:34px;font-weight:800}
+.bar{
+  height:12px;
+  background:#203954;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:8px;
+}
+.bar>div{
+  height:100%;
+  width:0;
+  background:var(--ok);
+  transition:.12s;
+}
+.note{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+  margin-top:10px;
+}
+.scores{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(115px,1fr));
+  gap:10px;
+}
+.score{
+  background:#102035;
+  border:1px solid #223d5b;
+  border-radius:12px;
+  padding:12px;
+}
+.score.best{border-color:var(--ok)}
+.score .l{
+  font-size:13px;
+  color:var(--muted);
+}
+.score .v{
+  font-size:21px;
+  font-weight:800;
+  margin-top:5px;
+}
+.log{
+  font-family:ui-monospace,Consolas,monospace;
+  background:#06111e;
+  border:1px solid #223b56;
+  border-radius:12px;
+  padding:13px;
+  height:430px;
+  overflow:auto;
+  line-height:1.55;
+  font-size:13px;
+}
+.ok{color:var(--ok)}
+.bad{color:var(--danger)}
+@media(max-width:1120px){
+  .main-layout{grid-template-columns:1fr}
+  .log-column{position:static}
+}
+@media(max-width:820px){
+  .top{flex-direction:column}
+  .title h1{font-size:30px}
+  .result{font-size:54px}
+  .scores{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="title">
+      <h1>Super Smart Racket</h1>
+      <div class="sub">EdgeImpulse.pinpon.5.0.0 · V2 封包 · 接收頁 5.r10 · 明確結果提早回報，每次事件只送一次</div><div class="note">BC 反手切 · BP 反手拉 · BS 反手拍 · FC 正手切 · FP 正手拉 · FS 正手拍</div>
+    </div>
+    <div id="status" class="status">● 未連線</div>
+  </div>
+
+  <div class="actions">
+    <button id="connect">連接 BLE</button>
+    <button id="disconnect" class="red" disabled>中斷連線</button>
+    <button id="clear" class="gray">清除 Log</button>
+    <button id="toggleLog" class="gray">顯示 Log</button>
+  </div>
+
+  <div id="mainLayout" class="main-layout log-hidden">
+    <div class="left-column">
+      <section class="panel">
+        <h2>最近一次收到的揮拍結果</h2>
+        <div id="result" class="result">--</div>
+        <div class="cap">CONFIDENCE</div>
+        <div id="confidence" class="conf">0.00%</div>
+        <div class="bar"><div id="confbar"></div></div>
+        <div id="wait" class="note">等待揮拍...</div>
+        <div id="deviceProgress" class="note">裝置狀態：尚未連線</div>
+      </section>
+
+      <section class="panel">
+        <h2>本次判定的最高／次高分數</h2>
+        <div id="scores" class="scores"></div>
+      </section>
+    </div>
+
+    <aside class="log-column">
+      <section class="panel">
+        <h2>Log</h2>
+        <div id="log" class="log"></div>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const SERVICE_UUID="0000fff0-0000-1000-8000-00805f9b34fb";
+const NOTIFY_UUID="0000fff1-0000-1000-8000-00805f9b34fb";
+
+const FRAME_SIZE=32;
+const SYNC0=0xAA;
+const SYNC1=0x55;
+// V2 ei_ai_frame_t: seven class scores, sample tick and inference latency.
+const VERSION=0x01;
+const TYPE_AI=0x02;
+
+const LABELS=["BC","BP","BS","FC","FP","FS","NONE"];
+const LABEL_NAMES=["反手切","反手拉","反手拍","正手切","正手拉","正手拍","無動作"];
+const UI_VERSION="PINPON_7CLASS_V5_EARLY_EVENTS_R10";
+const MAX_LOG_LINES=200;
+// Connected but idle this long since the last shown result: clear the card
+// back to "等待揮拍" instead of leaving a stale swing displayed forever.
+const RESULT_IDLE_CLEAR_MS=5000;
+
+
+let device=null;
+let server=null;
+let characteristic=null;
+let rx=new Uint8Array(0);
+let logLines=0;
+let logVisible=false;
+let connecting=false;
+let transportTimer=null;
+let notifyCount=0, notifyBytes=0, validFrames=0;
+let receivedSwings=0;
+let connectedAt=0, lastNotifyAt=0, lastValidAt=0;
+let resultIdleCleared=false;
+function resetTransportMonitor(){
+  if(transportTimer) clearInterval(transportTimer);
+  transportTimer=null;
+  notifyCount=notifyBytes=validFrames=0;
+  receivedSwings=0;
+  connectedAt=lastNotifyAt=lastValidAt=0;
+  resultIdleCleared=false;
+}
+function startTransportMonitor(){
+  connectedAt=Date.now();
+  transportTimer=setInterval(()=>{
+    // V2 only sends committed swings. Silence while idle is expected;
+    // there is no status heartbeat from which to infer device health.
+    if(validFrames===0 && Date.now()-connectedAt>5000){
+      $("deviceProgress").textContent=notifyCount>0
+        ? '收到 '+notifyCount+' 次通知 / '+notifyBytes+' bytes，但尚無有效 V2 封包。'
+        : "BLE 已連線，等待揮拍；明確結果會提早回報，待機時不傳送封包。";
+    }
+    else if(validFrames>0 && !resultIdleCleared &&
+            Date.now()-lastValidAt>=RESULT_IDLE_CLEAR_MS){
+      resultIdleCleared=true;
+      clearResultDisplay();
+      $("deviceProgress").textContent="BLE 已連線，閒置逾時已清除上次結果，等待下一次揮拍。";
+    }
+  },1000);
+}
+
+const $=id=>document.getElementById(id);
+const scoreEls=[];
+
+/* V2 carries all seven class scores. Keep the compact Top-1 / Top-2
+ * presentation, deriving the runner-up from the complete score vector.
+ */
+function buildScores(){
+  $("scores").innerHTML="";
+  scoreEls.length=0;
+
+  ["Top-1","Top-2"].forEach(rank=>{
+    const box=document.createElement("div");
+    box.className="score";
+
+    const name=document.createElement("div");
+    name.className="l";
+    name.textContent=rank;
+
+    const value=document.createElement("div");
+    value.className="v";
+    value.textContent="0.00%";
+
+    box.append(name,value);
+    $("scores").appendChild(box);
+    scoreEls.push({box,val:value});
+  });
+}
+
+function log(msg,cls=""){
+  const root=$("log");
+  const line=document.createElement("div");
+
+  line.className=cls;
+  line.textContent=`[${new Date().toLocaleTimeString("zh-TW",{hour12:false})}] ${msg}`;
+
+  root.appendChild(line);
+  logLines++;
+
+  while(logLines>MAX_LOG_LINES && root.firstChild){
+    root.removeChild(root.firstChild);
+    logLines--;
+  }
+
+  root.scrollTop=root.scrollHeight;
+}
+
+function setConnected(connected){
+  $("status").textContent=connected?"● 已連線":"● 未連線";
+  $("status").classList.toggle("on",connected);
+  $("connect").disabled=connected;
+  $("disconnect").disabled=!connected;
+}
+
+function append(a,b){
+  const out=new Uint8Array(a.length+b.length);
+  out.set(a,0);
+  out.set(b,a.length);
+  return out;
+}
+
+function checksum(frame){
+  let sum=0;
+
+  for(let i=0;i<30;i++){
+    sum=(sum+frame[i])&0xFFFF;
+  }
+
+  return sum;
+}
+
+
+function withTimeout(promise,ms,message){
+  let timer;
+  const timeout=new Promise((_,reject)=>{
+    timer=setTimeout(()=>reject(new Error(message)),ms);
+  });
+  return Promise.race([promise,timeout]).finally(()=>clearTimeout(timer));
+}
+
+async function connectBLE(){
+  if(connecting)return;
+  if(device?.gatt?.connected){
+    log("BLE 已經連線");
+    return;
+  }
+
+  connecting=true;
+  $("connect").disabled=true;
+  $("connect").textContent="連線中...";
+
+  try{
+    if(!navigator.bluetooth){
+      throw new Error("此瀏覽器不支援 Web Bluetooth，請使用 Chrome 或 Edge");
+    }
+
+    log("開啟 BLE 裝置選擇器...");
+
+    device=await navigator.bluetooth.requestDevice({
+      filters:[{namePrefix:"Super_Smart_Racket"}],
+      optionalServices:[SERVICE_UUID]
+    });
+
+    device.removeEventListener("gattserverdisconnected",onDisconnected);
+    device.addEventListener("gattserverdisconnected",onDisconnected);
+
+    log(`連接 ${device.name||"(未命名)"}...`);
+
+    server=await withTimeout(
+      device.gatt.connect(),
+      10000,
+      "GATT 連線逾時"
+    );
+
+    log("GATT 已連線，等待 Service Discovery...","ok");
+
+    /*
+     * Give the peripheral/ATT server more time before service discovery.
+     */
+    await new Promise(resolve=>setTimeout(resolve,800));
+
+    if(!device.gatt.connected){
+      throw new Error("BLE 在 Service Discovery 前中斷");
+    }
+
+    log("搜尋 FFF0 Service...");
+    const service=await withTimeout(
+      server.getPrimaryService(SERVICE_UUID),
+      20000,
+      "取得 FFF0 Service 逾時"
+    );
+
+    log("找到 FFF0 Service","ok");
+    characteristic=await withTimeout(
+      service.getCharacteristic(NOTIFY_UUID),
+      10000,
+      "取得 FFF1 Characteristic 逾時"
+    );
+
+    log("找到 FFF1 Characteristic","ok");
+
+    resetTransportMonitor();
+    rx=new Uint8Array(0);
+    characteristic.removeEventListener("characteristicvaluechanged",onNotify);
+    characteristic.addEventListener("characteristicvaluechanged",onNotify);
+
+    await withTimeout(
+      characteristic.startNotifications(),
+      10000,
+      "啟用 FFF1 Notify 逾時"
+    );
+
+    setConnected(true);
+    $("deviceProgress").textContent="通知已啟用，等待 V2 揮拍結果…";
+    startTransportMonitor();
+    log("BLE 已連線，FFF1 Notify 已啟用","ok");
+  }
+  catch(e){
+    console.error(e);
+
+    try{
+      if(device?.gatt?.connected){
+        device.gatt.disconnect();
+      }
+    }catch(_){}
+
+    server=null;
+    characteristic=null;
+    rx=new Uint8Array(0);
+    setConnected(false);
+    log(`BLE 錯誤：${e.message}`,"bad");
+  }
+  finally{
+    connecting=false;
+    $("connect").textContent="連接 BLE";
+
+    if(!device?.gatt?.connected){
+      $("connect").disabled=false;
+    }
+  }
+}
+
+function disconnectBLE(){
+  if(device?.gatt?.connected){
+    device.gatt.disconnect();
+  }
+  else{
+    onDisconnected();
+  }
+}
+
+function onDisconnected(){
+  resetTransportMonitor();
+  $("deviceProgress").textContent="裝置狀態：已中斷連線";
+  setConnected(false);
+  connecting=false;
+  server=null;
+  characteristic=null;
+  rx=new Uint8Array(0);
+  $("connect").textContent="連接 BLE";
+  $("connect").disabled=false;
+  log("BLE 已中斷","bad");
+  clearResultDisplay();
+}
+
+function clearResultDisplay(){
+  $("result").textContent="--";
+  $("confidence").textContent="0.00%";
+  $("confbar").style.width="0%";
+  $("wait").textContent="等待揮拍...";
+
+  scoreEls.forEach(item=>{
+    item.val.textContent="0.00%";
+    item.box.classList.remove("best");
+  });
+}
+
+function onNotify(ev){
+  const value=ev.target.value;
+  const data=new Uint8Array(
+    value.buffer,
+    value.byteOffset,
+    value.byteLength
+  );
+
+  ++notifyCount;
+  notifyBytes+=data.length;
+  lastNotifyAt=Date.now();
+  if(notifyCount===1) log('收到第一筆 BLE Notify：'+data.length+' bytes',"ok");
+  rx=append(rx,data);
+  parseRx();
+}
+
+function parseRx(){
+  while(rx.length>=2){
+    let start=-1;
+
+    for(let i=0;i<=rx.length-2;i++){
+      if(rx[i]===SYNC0 && rx[i+1]===SYNC1){
+        start=i;
+        break;
+      }
+    }
+
+    if(start<0){
+      rx=(rx[rx.length-1]===SYNC0)?rx.slice(-1):new Uint8Array(0);
+      return;
+    }
+
+    if(start>0){
+      rx=rx.slice(start);
+    }
+
+    if(rx.length<FRAME_SIZE){
+      return;
+    }
+
+    const frame=rx.slice(0,FRAME_SIZE);
+    const dv=new DataView(frame.buffer,frame.byteOffset,frame.byteLength);
+    if(frame[2]!==VERSION || frame[3]!==TYPE_AI ||
+       dv.getUint16(30,true)!==checksum(frame)){
+      // Recover after a truncated/lost fragment without skipping the next header.
+      rx=rx.slice(1);
+      continue;
+    }
+    rx=rx.slice(FRAME_SIZE);
+    parseFrame(frame);
+  }
+}
+
+function parseFrame(frame){
+  if(frame.length!==FRAME_SIZE || frame[0]!==SYNC0 || frame[1]!==SYNC1 ||
+     frame[2]!==VERSION || frame[3]!==TYPE_AI) return;
+  const dv=new DataView(frame.buffer,frame.byteOffset,frame.byteLength);
+  if(dv.getUint16(30,true)!==checksum(frame)){
+    log("丟棄 checksum 錯誤的 AI Frame","bad");
+    return;
+  }
+  const seq=dv.getUint32(4,true);
+  const tickUs=dv.getUint32(8,true);
+  const labelIndex=dv.getUint8(12);
+  const confidence=dv.getUint8(13)/255;
+  const latencyMs=dv.getUint16(28,true);
+  if(labelIndex>=LABELS.length){
+    log(`丟棄無效 Label：${labelIndex}`,"bad");
+    return;
+  }
+  const scores=[];
+  for(let i=0;i<LABELS.length;i++){
+    const raw=dv.getUint16(14+i*2,true);
+    if(raw>10000){
+      log(`丟棄無效 Score：class=${LABELS[i]} raw=${raw}`,"bad");
+      return;
+    }
+    scores.push(raw/10000);
+  }
+  ++validFrames;
+  lastValidAt=Date.now();
+  $("deviceProgress").textContent=`V2 封包 #${seq}｜取樣時間 ${(tickUs/1000).toFixed(1)} ms｜代表視窗推論 ${latencyMs} ms`;
+  // Retain compatibility with older senders: NONE never changes the display.
+  if(LABELS[labelIndex]==="NONE") return;
+  ++receivedSwings;
+  resultIdleCleared=false;
+  let label2Index=labelIndex===0 ? 1 : 0;
+  for(let i=0;i<scores.length;i++){
+    if(i!==labelIndex && scores[i]>scores[label2Index]) label2Index=i;
+  }
+  const label=LABELS[labelIndex], labelName=LABEL_NAMES[labelIndex];
+  const label2=LABELS[label2Index], label2Name=LABEL_NAMES[label2Index];
+  const score0=scores[labelIndex], score1=scores[label2Index];
+  $("result").textContent=`${label} · ${labelName}`;
+  $("confidence").textContent=`${(confidence*100).toFixed(2)}%`;
+  $("confbar").style.width=`${Math.min(100,confidence*100)}%`;
+  $("wait").textContent=`本次連線收到第 ${receivedSwings} 筆揮拍結果 · ${label} · 封包 #${seq}`;
+  scoreEls[0].val.textContent=`${label} · ${labelName} ${(score0*100).toFixed(2)}%`;
+  scoreEls[0].box.classList.add("best");
+  scoreEls[1].val.textContent=label2==="NONE" ? "--" :
+    `${label2} · ${label2Name} ${(score1*100).toFixed(2)}%`;
+  scoreEls[1].box.classList.remove("best");
+  const top2Text=label2==="NONE" ? "" :
+    ` | Top2=${label2}(${label2Name}) ${(score1*100).toFixed(1)}%`;
+  log(`揮拍結果 #${seq} ${label}(${labelName}) ${(confidence*100).toFixed(2)}%${top2Text}`,"ok");
+  // Idle firmware can remain silent indefinitely. Hold this result until the
+  // next swing (including the same class) or disconnect, without a clear timer.
+}
+
+function toggleLog(){
+  logVisible=!logVisible;
+  $("mainLayout").classList.toggle("log-hidden",!logVisible);
+  $("toggleLog").textContent=logVisible?"隱藏 Log":"顯示 Log";
+}
+
+function clearAll(){
+  // Clear only the log; keep the latest result and this connection's count.
+  $("log").innerHTML="";
+  logLines=0;
+  rx=new Uint8Array(0);
+
+  log("Log 已清除");
+}
+
+buildScores();
+
+$("connect").addEventListener("click",connectBLE);
+$("disconnect").addEventListener("click",disconnectBLE);
+$("clear").addEventListener("click",clearAll);
+$("toggleLog").addEventListener("click",toggleLog);
+
+log(`網頁已就緒 (${UI_VERSION})，請按「連接 BLE」`);
+</script>
+</body>
+</html>
