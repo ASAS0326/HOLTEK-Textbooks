@@ -57,7 +57,7 @@ CH8.Super_Smart_Racket/
 
 ## 開發環境
 
-- Keil MDK 5，Arm Compiler 6（V6.24），裝置包 `Holtek.HT32F675x5_DFP`
+- Keil MDK 5（實測 MDK 5.43a）：資料收集與 CP 專案使用 Arm Compiler 6，MP 推論專案使用 Keil 中設定的 Arm GNU Toolchain（GCC，實測 14.2），裝置包 `Holtek.HT32F675x5_DFP` 1.0.6
 - 推論專案另需 CMSIS、CMSIS-DSP、CMSIS-NN
 - Python 3 與 `pyserial`；錄製腳本的互動按鍵只支援 Windows 終端機
 - Edge Impulse 帳號

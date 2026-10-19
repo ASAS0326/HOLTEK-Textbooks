@@ -34,7 +34,7 @@ HOLTEK-Textbooks/
 
 ## 共通開發環境
 
-- Keil MDK 5（Arm Compiler 6）或 HT32-IDE
+- Keil MDK 5（資料收集專案用 Arm Compiler 6，推論專案用 Arm GNU Toolchain／GCC）或 HT32-IDE
 - Holtek 裝置包：`HT32F493x5_DFP`、`HT32F675x5_DFP`
 - CMSIS、CMSIS-DSP、CMSIS-NN
 - Python 3（`pyserial`；CH6 另需 `numpy`、`opencv-python`）

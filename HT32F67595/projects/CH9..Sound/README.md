@@ -65,7 +65,7 @@ CH9..Sound/
 
 ## 開發環境
 
-- Keil MDK 5，Arm Compiler 6，裝置包 `Holtek.HT32F675x5_DFP` 1.0.5
+- Keil MDK 5（實測 MDK 5.43a）：資料收集專案使用 Arm Compiler 6，推論專案使用 Keil 中設定的 Arm GNU Toolchain（GCC，實測 14.2），裝置包 `Holtek.HT32F675x5_DFP` 1.0.6
 - 推論專案另需 CMSIS 6.3.0、CMSIS-DSP 1.16.2、CMSIS-NN 4.0.0
 - Node.js 與 Edge Impulse CLI（`npm install -g edge-impulse-cli`）
 - Edge Impulse 帳號

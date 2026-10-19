@@ -17,6 +17,7 @@
 
 extern "C" {
     #include "type_def.h"
+    #include "err_def.h"
     #include "hw_uart.h"
     #include "app_cfg.h"
     #include "boards.h"
