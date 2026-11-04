@@ -44,14 +44,14 @@ HOLTEK-Textbooks/
 
 每章都包含以下部分：
 
-| 章節 | 資料收集 | 推論 | 模型 Pack | PC 端 Python |
-|---|---|---|---|---|
-| CH4 | `Data_collection/` | `Run_Classification/` | `pinpon2-cmsis-package-v1-impulse-#1/` | `collect_training_data.py` |
-| CH5 | `Data_collection/` | `Run_Classification/` | `baby_cry-cmsis-package-v5-impulse-#1/` | —（使用 Edge Impulse Data Forwarder） |
-| CH6 | `Data_collection/` | `Run_Classification/` | `holtek_image_classification-cmsis-package-v15-impulse-#1/` | `data_collection.py`、`run_classification.py` |
-| CH7 | `Data_collection/` | `Run_Classification/` | `t&h2-cmsis-package-v2-impulse-#1/` | `data_logger.py`、`data.py` |
-| CH8 | `Data_collection/` | `Run_Classification/` | `pinpon_model/` | `collect_training_data.py` |
-| CH9 | `Data_collection/` | `Run_Classification/` | `baby_cry-cmsis-package-v5-impulse-#1/` | —（使用 Edge Impulse Data Forwarder） |
-| CH10 | `Data_collection/` | `Run_Classification/` | `t&h2-cmsis-package-v2-impulse-#1/` | `data_logger.py`、`data.py` |
+| 章節 | 資料收集 | 推論 | 模型 Pack | PC 端 Python | 附帶資料集 |
+|---|---|---|---|---|---|
+| CH4 | `Data_collection/` | `Run_Classification/` | `pinpon2-cmsis-package-v1-impulse-#1/` | `collect_training_data.py` | `recordings/`（1,227 個揮拍 CSV） |
+| CH5 | `Data_collection/` | `Run_Classification/` | `baby_cry-cmsis-package-v5-impulse-#1/` | —（使用 Edge Impulse Data Forwarder） | `baby_cry-export/`（113 個 1 秒音訊） |
+| CH6 | `Data_collection/` | `Run_Classification/` | `holtek_image_classification-cmsis-package-v15-impulse-#1/` | `data_collection.py`、`run_classification.py` | — |
+| CH7 | `Data_collection/` | `Run_Classification/` | `t&h2-cmsis-package-v2-impulse-#1/` | `data_logger.py`、`data.py` | `data/`（約 59 小時溫溼度） |
+| CH8 | `Data_collection/` | `Run_Classification/` | `pinpon_model/` | `collect_training_data.py` | 可使用 CH4 的 `recordings/` |
+| CH9 | `Data_collection/` | `Run_Classification/` | `baby_cry-cmsis-package-v5-impulse-#1/` | —（使用 Edge Impulse Data Forwarder） | `baby_cry-export/`（與 CH5 相同） |
+| CH10 | `Data_collection/` | `Run_Classification/` | `t&h2-cmsis-package-v2-impulse-#1/` | `data_logger.py`、`data.py` | `data/`（與 CH7 相同） |
 
-相同題目在兩塊板子上使用同一份 Python 腳本（CH4／CH8、CH7／CH10 的 `.py` 內容完全相同）。各章附的 Edge Impulse CMSIS Pack 可以直接部署體驗，再用自己收集的資料重新訓練。
+相同題目在兩塊板子上使用同一份 Python 腳本（CH4／CH8、CH7／CH10 的 `.py` 內容完全相同）。各章附的 Edge Impulse CMSIS Pack 可以直接部署體驗，再用自己收集的資料重新訓練。有附帶資料集的章節可以跳過資料收集，直接用資料集在 Edge Impulse 訓練模型。

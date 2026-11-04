@@ -2,6 +2,8 @@
 
 用 LSM6DS3 六軸 IMU 記錄桌球揮拍動作，在 Edge Impulse 訓練 7 類揮拍分類模型，再部署回 HT32F49395 即時推論，並透過板上 BLE 模組把結果送到網頁或手機 App 顯示。
 
+本章附有一份實際錄製的揮拍資料集（`recordings/`，1,227 個 CSV），可以跳過資料收集直接訓練模型。
+
 ## 學習目標
 
 - 以 SPI 讀取 LSM6DS3 加速度計與陀螺儀（104 Hz、±16 g、±2000 dps）
@@ -50,6 +52,9 @@ CH4.Super_Smart_Racket/
 ├── pinpon2-cmsis-package-v1-impulse-#1/
 │   ├── EdgeImpulse.pinpon2.7.0.0.pack    # 已訓練好的模型
 │   └── EdgeImpulse.EI-SDK.1.95.14.pack   # Edge Impulse SDK
+├── recordings/                   # 附帶資料集（錄製腳本的輸出）
+│   ├── 20260926/                 # BP、BS、FP、FS、NONE
+│   └── 20260928/                 # BC、BP、BS、FC、FP、FS、NONE
 ├── collect_training_data.py      # PC 端揮拍錄製腳本
 ├── index.html                    # Web Bluetooth 結果接收頁
 └── APK/                          # Android 接收 App（app-release.apk）與 QR Code（apk.png）
@@ -66,6 +71,15 @@ CH4.Super_Smart_Racket/
 - 支援 Web Bluetooth 的瀏覽器（Chrome／Edge），或 Android 手機安裝 `APK/app-release.apk`
 
 > `mdk_v5` 與 `mdk_v537` 兩種 Keil 專案的原始檔與元件相同，都可以編譯。
+
+## 兩種做法
+
+| 做法 | 適合情況 | 流程 |
+|---|---|---|
+| A. 使用附帶資料集 | 想先跑通整個流程，或手邊沒有球拍可以錄 | 看過 [附帶資料集](#附帶資料集) 後，直接到 [步驟二](#步驟二在-edge-impulse-訓練模型) 上傳 `recordings/` 內的 CSV |
+| B. 自己錄製資料 | 想用自己的揮拍習慣訓練 | 依序完成步驟一到步驟三 |
+
+兩種做法也可以混用：自己錄的 CSV 會存進同一個 `recordings/`（以錄製日期分資料夾），和附帶資料一起上傳即可。
 
 ## 步驟一：收集揮拍資料
 
@@ -128,9 +142,53 @@ python collect_training_data.py --port COM9 --label FS
 
 建議流程：6 種擊球動作各錄足夠數量後，執行一次 `--extract-none recordings/_streams` 補充 `NONE` 樣本，讓模型學會忽略回拉動作。
 
+`--extract-none` 的輸出放在 `recordings/none_extra_<時間>/NONE/`，檔名結尾為 `_return`（擊球後 1 秒內的回拉）或 `_other`（`NONE` 錄製中沒被存下的其他動作）。
+
+## 附帶資料集
+
+`recordings/` 是用本章資料收集韌體與 `collect_training_data.py` 實際錄製的結果，格式與步驟一的輸出完全相同，可以直接上傳 Edge Impulse。
+
+### 概況
+
+| 項目 | 數值 |
+|---|---|
+| 錄製日期 | 2026-09-26、2026-09-28 兩天 |
+| 檔案數 | 1,227 個 CSV（約 5 MB） |
+| 每個檔案 | 62 筆 × 6 軸（`Ax, Ay, Az`：g；`Gx, Gy, Gz`：dps），104 Hz（間隔 9.615 ms） |
+| 峰值位置 | 所有檔案的合成角速度峰值都在第 35 筆（從 0 起算），與步驟一的切割規則一致 |
+| Edge Impulse 視窗數 | 每個 CSV 產生 3 個視窗，共 3,681 個 |
+
+### 各標籤數量
+
+| 標籤 | 09-26 | 09-28 | 合計 | 角速度峰值中位數 |
+|---|---|---|---|---|
+| `BC` 反手切 | — | 91 | 91 | 1,053 dps |
+| `BP` 反手拉 | 61 | 50 | 111 | 1,239 dps |
+| `BS` 反手拍 | 60 | 50 | 110 | 917 dps |
+| `FC` 正手切 | — | 72 | 72 | 1,185 dps |
+| `FP` 正手拉 | 50 | 55 | 105 | 1,083 dps |
+| `FS` 正手拍 | 50 | 55 | 105 | 1,062 dps |
+| `NONE` 非擊球 | 332 | 301 | 633 | 501 dps |
+| 合計 | 553 | 674 | 1,227 | |
+
+`NONE` 的組成：
+
+| 日期 | 直接錄製 | `--extract-none` 回拉（`_return`） | `--extract-none` 其他動作（`_other`） |
+|---|---|---|---|
+| 09-26 | 150 | 132 | 50 |
+| 09-28 | 301 | — | — |
+
+### 使用前要知道的事
+
+- `NONE` 約佔一半（633／1,227），6 種擊球各 72～111 個；`BC`、`FC` 只有 09-28 一天的資料，變化較少
+- `NONE` 的峰值中位數約 500 dps，明顯低於擊球動作（約 900～1,200 dps），但最大值仍到 1,604 dps，模型不能只靠力道判斷
+- 有 29 個檔案的加速度碰到 ±16 g 量程上限（`BP` 15 個、`FS` 6 個、`FC` 4 個、`FP` 3 個、`NONE` 1 個），屬於大力揮拍時的正常現象
+- 資料集只附切好的 CSV，沒有 `_streams/` 原始串流，因此不能對它執行 `--recut` 或 `--extract-none`
+- 資料只涵蓋錄製時的揮拍者與動作習慣；換人使用時辨識率可能下降，建議再錄一些自己的資料一起訓練
+
 ## 步驟二：在 Edge Impulse 訓練模型
 
-1. **Data acquisition → Upload data**：上傳所有 CSV，標籤選擇從檔名推斷（Infer from filename），並自動切分 Training／Test
+1. **Data acquisition → Upload data**：上傳所有 CSV，標籤選擇從檔名推斷（Infer from filename），並自動切分 Training／Test。使用附帶資料集時，選取 `recordings/` 底下所有日期資料夾內的 CSV
 2. **Create impulse**：
    - Window size **500 ms**、Window increase **40 ms**（每個 CSV 產生 3 個視窗，峰值位置分別在 35／31／27）
    - Frequency 104 Hz
@@ -212,3 +270,4 @@ BM67C593 模組要等內部緩衝填滿才會轉送資料，因此每個封包�
 | 板端取樣率與 104 Hz 差超過 3% | 感測器振盪器誤差；CSV 以取樣點為準，同一塊板子訓練與推論仍一致 |
 | 編譯出現 `expected pinpon2 deploy version 7` | 專案用到的模型 Pack 版本與程式不符，檢查 RTE 元件或修改 `static_assert` |
 | 網頁找不到裝置 | 接收頁只列出名稱以 `Super_Smart_Racket` 開頭的裝置，確認除錯 UART 顯示名稱設定成功 |
+| 用附帶資料集訓練，自己揮拍常被判成 `NONE` 或錯類別 | 資料集只涵蓋錄製時的揮拍習慣，用 `collect_training_data.py` 補錄自己的揮拍後一起重新訓練 |

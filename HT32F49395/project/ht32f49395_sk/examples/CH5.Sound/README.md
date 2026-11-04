@@ -2,6 +2,8 @@
 
 以 ICS-43434 I2S 數位麥克風收音，將聲音串流到 Edge Impulse 建立嬰兒哭聲分類模型，再部署回 HT32F49395，每秒判斷一次環境聲音是「哭聲」、「笑聲」或「雜音」。
 
+本章附有從 Edge Impulse 匯出的聲音資料集（`baby_cry-export/`，113 個 1 秒樣本），可以匯入自己的 Edge Impulse 專案直接訓練。
+
 ## 學習目標
 
 - 設定 I2S 主機接收模式，搭配 DMA 循環緩衝與半滿／全滿中斷收音
@@ -48,10 +50,15 @@ CH5.Sound/
 ├── Run_Classification/           # 推論韌體
 │   ├── src/  inc/                # main.c、ei_main.cpp、ICS43434 驅動
 │   ├── mdk_v5/  mdk_v537/  HT32-IDE/
-└── baby_cry-cmsis-package-v5-impulse-#1/
-    ├── EdgeImpulse.baby_cry.5.0.0.pack   # 已訓練好的模型
-    ├── EdgeImpulse.EI-SDK.1.95.13.pack   # Edge Impulse SDK
-    └── edgeimpulse.clayer.yml
+├── baby_cry-cmsis-package-v5-impulse-#1/
+│   ├── EdgeImpulse.baby_cry.5.0.0.pack   # 已訓練好的模型
+│   ├── EdgeImpulse.EI-SDK.1.95.13.pack   # Edge Impulse SDK
+│   └── edgeimpulse.clayer.yml
+└── baby_cry-export/              # 附帶資料集（Edge Impulse 匯出）
+    ├── info.labels               # 全部樣本的標籤與 Training／Testing 分類
+    ├── training/                 # 96 個樣本（JSON）＋info.labels
+    ├── testing/                  # 17 個樣本（JSON）＋info.labels
+    └── README.txt                # Edge Impulse 的匯入說明
 ```
 
 > 兩個 `readme.txt` 是範本沿用下來的 SysTick 說明，內容與本章無關。
@@ -64,6 +71,15 @@ CH5.Sound/
 - Edge Impulse 帳號
 
 > `mdk_v5` 與 `mdk_v537` 兩種 Keil 專案的原始檔與元件相同，都可以編譯。
+
+## 兩種做法
+
+| 做法 | 適合情況 | 流程 |
+|---|---|---|
+| A. 使用附帶資料集 | 想先跑通整個流程，或手邊沒有嬰兒聲音可以錄 | 看過 [附帶資料集](#附帶資料集) 並匯入 Edge Impulse 後，直接到 [步驟二](#步驟二在-edge-impulse-訓練模型) |
+| B. 自己收集資料 | 想用自己環境的聲音訓練 | 依序完成步驟一到步驟三 |
+
+兩種做法也可以混用：先匯入附帶資料集，再用 Data Forwarder 把自己錄的聲音加進同一個專案。
 
 ## 步驟一：收集聲音資料
 
@@ -94,7 +110,57 @@ edge-impulse-data-forwarder --baud-rate 921600
 
 建議每個標籤收集數分鐘以上的資料，並包含不同距離與背景音量。
 
+## 附帶資料集
+
+`baby_cry-export/` 是 Edge Impulse 專案 `baby_cry` 的資料匯出。每個 JSON 檔是一個已切好的 **1 秒、8 kHz 單聲道** 樣本（8000 筆有號整數，`interval_ms` 0.125），檔名開頭就是標籤。
+
+### 概況
+
+| 標籤 | 訓練 | 測試 | 來源 |
+|---|---|---|---|
+| `cry` | 40 | 6 | 2 段 WAV 錄音切出 30 個＋Data Forwarder 收集 16 個 |
+| `laugh` | 25 | 5 | 3 段 WAV 錄音 |
+| `noise` | 31 | 6 | 2 段 WAV 錄音 |
+| 合計 | 96（96 秒） | 17（17 秒） | |
+
+- WAV 錄音的檔名是 `sph0645_record_binary*`，代表是以 SPH0645 麥克風（CH9 使用的麥克風）錄製；Data Forwarder 收集的 16 個 `cry` 樣本檔名為 `cry.json.*`
+- 兩種來源的感測器名稱不同（WAV 為 `audio`、Data Forwarder 為 `voice`），都是單軸音訊
+
+### 匯入 Edge Impulse
+
+**方法一：Edge Impulse CLI**
+
+```bash
+cd baby_cry-export
+edge-impulse-uploader --clean --info-file info.labels
+```
+
+`--clean` 會清除 CLI 記住的登入與專案設定，讓你重新選擇要匯入的專案；標籤與 Training／Testing 分類依 `info.labels` 設定。
+
+**方法二：Edge Impulse Studio**
+
+到 **Data acquisition → Upload data**：
+
+1. 選取 `training/` 內所有 `.json`，Upload into category 選 **Training**，標籤選 **Infer from filename**
+2. 再選取 `testing/` 內所有 `.json`，category 選 **Testing**，同樣從檔名推斷標籤
+
+### 使用前要知道的事
+
+- **測試集不是獨立的錄音**：17 個測試樣本和訓練樣本切自同一批 WAV 錄音，Model testing 的準確率會偏樂觀。要評估真實效果，請另外錄一段沒拿來訓練的聲音當測試資料
+- **三個標籤的音量差很多**（訓練集的振幅）：
+
+  | 標籤 | 最大振幅 | 平均標準差 |
+  |---|---|---|
+  | `cry` | 約 4,300 | 約 200 |
+  | `laugh` | 約 25,000 | 約 3,300 |
+  | `noise` | 約 1,200 | 約 60 |
+
+  `laugh` 的音量比 `cry` 大一個數量級以上，模型可能把「大聲」當成判斷笑聲的線索。實際使用時若大聲的哭聲或雜音被誤判成 `laugh`，請補錄不同音量的資料
+- **資料量偏少**：每個標籤只有 25～40 秒的訓練資料，建議再加上用本章板子收集的資料。本章使用的 ICS-43434 和錄製 WAV 的 SPH0645 是不同的麥克風，加入自己板子的資料能讓模型更貼近實際推論時的輸入
+
 ## 步驟二：在 Edge Impulse 訓練模型
+
+使用附帶資料集時，匯入後從第 1 步開始即可。
 
 1. **Create impulse**：Time series data，Window size **1000 ms**、Frequency **8000 Hz**
 2. Processing block：**Audio (MFCC)**
@@ -143,3 +209,4 @@ DSP=<n> ms, NN=<n> ms
 | 收到的數值全為 0 或固定值 | 確認使用的聲道與麥克風 LR 接法一致（本章為右聲道 U6） |
 | 推論結果與訓練時差很多 | 檢查資料收集與推論是否使用同一聲道、同一降頻方式，且輸入沒有被正規化 |
 | 編譯出現 `This code expects an 8000 Hz Edge Impulse audio model.` | 模型的取樣率不是 8 kHz，請在 Edge Impulse 重新設定 Impulse |
+| 用附帶資料集訓練，Model testing 很準但實際推論常判錯 | 附帶的測試集和訓練集來自同一批錄音，準確率偏樂觀；補錄本章板子的資料一起訓練，並另錄獨立的測試資料 |

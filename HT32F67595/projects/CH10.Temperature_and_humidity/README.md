@@ -2,6 +2,8 @@
 
 與 CH7 相同的溫溼度預測題目，改用 HT32F67595。以 HS3003 每 5 秒量測一次，用 Edge Impulse 迴歸模型預測 **30 秒後** 的溫度與溼度，並在 30 秒後以實際量測值驗證誤差。PC 端腳本、資料集格式與模型都和 CH7 共用。
 
+本章同樣附有一份實際記錄約 **59 小時** 的資料集（`data/`），與 CH7 的 `data/` 內容相同，可以跳過資料收集直接訓練。
+
 ## 學習目標
 
 - 以 HT32F67595 的 I2C＋DMA 非阻塞方式讀取 HS3003
@@ -37,6 +39,13 @@ CH10.Temperature_and_humidity/
 │   ├── EdgeImpulse.T_H2.2.0.0.pack       # 已訓練好的模型（與 CH7 相同）
 │   ├── EdgeImpulse.EI-SDK.1.95.13.pack
 │   └── edgeimpulse.clayer.yml
+├── data/                         # 附帶資料集（與 CH7 相同）
+│   ├── ei_22in1out_trend_train.csv       # 上傳為訓練資料（已平衡）
+│   ├── ei_22in1out_trend_test.csv        # 上傳為測試資料（原始分布）
+│   ├── ei_22in1out_trend_train_unbalanced.csv
+│   ├── ei_22in1out_trend_all.csv
+│   ├── audit_all.csv
+│   └── resampled_5sec.csv
 ├── data_logger.py                # PC 端：接收序列資料存成 CSV（與 CH7 相同）
 └── data.py                       # PC 端：產生 Edge Impulse 迴歸資料集（與 CH7 相同）
 ```
@@ -49,6 +58,13 @@ CH10.Temperature_and_humidity/
 - Edge Impulse 帳號
 
 不想編譯時，可直接燒錄 `hex/gpio.hex`。
+
+## 兩種做法
+
+| 做法 | 適合情況 | 流程 |
+|---|---|---|
+| A. 使用附帶資料集 | 想先跑通整個流程，或沒時間記錄數小時以上的資料 | 跳過步驟一，在步驟二直接上傳 `data/` 內的檔案 |
+| B. 自己收集資料 | 想用自己環境的資料訓練 | 依序完成步驟一到步驟三 |
 
 ## 步驟一：記錄溫溼度資料
 
@@ -80,6 +96,20 @@ python data.py log_data/data.csv
 資料集的 22 個輸入特徵、標籤定義、平衡方式與輸出檔案，以及 Edge Impulse 的訓練設定（Raw data＋Regression），請見 [CH7 README](../../../HT32F49395/project/ht32f49395_sk/examples/CH7.Temperature_and_humidity/README.md#步驟二產生-edge-impulse-資料集)。
 
 兩塊板子輸出相同的 `DATA` 格式，CH7 與 CH10 收集的 CSV 可以合併後一起產生資料集。
+
+### 使用附帶資料集
+
+`data/` 是以預設參數執行 `data.py` 的結果，可直接在 Edge Impulse **Data acquisition → Upload data** 上傳 `ei_22in1out_trend_train.csv`（Training）與 `ei_22in1out_trend_test.csv`（Testing）。重點數據：
+
+| 項目 | 數值 |
+|---|---|
+| 記錄期間 | 2026-09-13 ～ 2026-09-20，4 個主要連續區段，合計約 59 小時 |
+| 溫度／溼度範圍 | 26.55 ～ 31.06 °C／27.09 ～ 89.49 %RH |
+| 訓練集 | 30,000 個時間點（平衡後 `rising` 5,000、`falling` 5,000、`stable` 20,000），60,000 列 |
+| 測試集 | 8,499 個時間點（原始分布），16,998 列 |
+| 參考基準（不預測）測試集 MAE | 溫度 0.0092 °C、溼度 0.213 %RH |
+
+各區段時間、狀態分布、標籤範圍，以及如何用 `resampled_5sec.csv` 換參數重新產生資料集，請見 [CH7 README 的附帶資料集](../../../HT32F49395/project/ht32f49395_sk/examples/CH7.Temperature_and_humidity/README.md#附帶資料集)。
 
 本章附的模型 `T&H2` 2.0.0（Edge Impulse 專案 1112124）：22 個輸入、1 個迴歸輸出。
 

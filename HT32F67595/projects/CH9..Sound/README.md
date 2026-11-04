@@ -2,6 +2,8 @@
 
 與 CH5 相同的嬰兒哭聲辨識題目，改用 HT32F67595 與 SPH0645LM4H I2S 數位麥克風。推論端改用 Edge Impulse 的 **連續推論**（每 250 ms 更新一次結果），並加上多數決濾波，只在哭聲穩定出現時才輸出「開始哭／停止哭」事件。
 
+本章附有從 Edge Impulse 匯出的聲音資料集（`baby_cry-export/`，113 個 1 秒樣本，與 CH5 相同），可以匯入自己的 Edge Impulse 專案直接訓練。
+
 ## 學習目標
 
 - 設定 HT32F67595 的 I2S 主機接收與 DMA 乒乓緩衝
@@ -57,10 +59,15 @@ CH9..Sound/
 │   ├── src/  inc/                # ei_main.cpp、I2S.c、SPH0645LM4H.c
 │   ├── config/  project/  project_HT32-IDE/
 │   └── hex/gpio.hex
-└── baby_cry-cmsis-package-v5-impulse-#1/
-    ├── EdgeImpulse.baby_cry.5.0.0.pack   # 已訓練好的模型（與 CH5 相同）
-    ├── EdgeImpulse.EI-SDK.1.95.13.pack
-    └── edgeimpulse.clayer.yml
+├── baby_cry-cmsis-package-v5-impulse-#1/
+│   ├── EdgeImpulse.baby_cry.5.0.0.pack   # 已訓練好的模型（與 CH5 相同）
+│   ├── EdgeImpulse.EI-SDK.1.95.13.pack
+│   └── edgeimpulse.clayer.yml
+└── baby_cry-export/              # 附帶資料集（Edge Impulse 匯出，與 CH5 相同）
+    ├── info.labels
+    ├── training/                 # 96 個樣本（JSON）
+    ├── testing/                  # 17 個樣本（JSON）
+    └── README.txt
 ```
 
 ## 開發環境
@@ -86,6 +93,25 @@ CH9..Sound/
 5. 在 Edge Impulse **Data acquisition** 頁面輸入標籤（`cry`／`laugh`／`noise`）開始錄製
 
 > CH5（HT32F49395）與本章輸出相同格式的 8 kHz PCM，可以把兩塊板子收集的資料放進同一個 Edge Impulse 專案。
+
+### 使用附帶資料集
+
+不想自己錄音時，可以跳過上面的步驟，直接匯入 `baby_cry-export/`：
+
+```bash
+cd baby_cry-export
+edge-impulse-uploader --clean --info-file info.labels
+```
+
+或在 Edge Impulse Studio 的 **Data acquisition → Upload data** 分別上傳 `training/`（Training）與 `testing/`（Testing）內的 `.json`，標籤選 **Infer from filename**。
+
+| 標籤 | 訓練 | 測試 |
+|---|---|---|
+| `cry` | 40 | 6 |
+| `laugh` | 25 | 5 |
+| `noise` | 31 | 6 |
+
+每個樣本為 1 秒、8 kHz。WAV 錄音的檔名為 `sph0645_record_binary*`，使用的是和本章相同的 SPH0645 麥克風。資料來源、音量差異與測試集的限制，請見 [CH5 README 的附帶資料集](../../../HT32F49395/project/ht32f49395_sk/examples/CH5.Sound/README.md#附帶資料集)。
 
 ## 步驟二：在 Edge Impulse 訓練模型
 

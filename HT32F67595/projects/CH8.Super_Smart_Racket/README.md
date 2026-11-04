@@ -77,11 +77,13 @@ CH8.Super_Smart_Racket/
 
 錄製腳本的按鍵、峰值對齊切割方式、參數與輸出檔案說明，請見 [CH4 README](../../../HT32F49395/project/ht32f49395_sk/examples/CH4.Super_Smart_Racket/README.md#步驟一收集揮拍資料)。兩章使用相同的感測器設定與格式，資料可以互通。
 
+> 想跳過錄製時，可以直接使用 CH4 附帶的揮拍資料集 `CH4.Super_Smart_Racket/recordings/`（1,227 個 CSV、7 個標籤），內容與數量說明見 [CH4 README 的附帶資料集](../../../HT32F49395/project/ht32f49395_sk/examples/CH4.Super_Smart_Racket/README.md#附帶資料集)。
+
 ## 步驟二：在 Edge Impulse 訓練模型
 
 設定與 CH4 相同：
 
-- 上傳 CSV、從檔名推斷標籤
+- 上傳 CSV（自己錄的，或 CH4 的 `recordings/`）、從檔名推斷標籤
 - Window size **500 ms**、Window increase **40 ms**、Frequency 104 Hz
 - Processing block：**Raw data**；Learning block：Classification
 - **Deployment** 選擇 **CMSIS Pack**，並使用 **int8 量化** 模型
